@@ -52,7 +52,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             register: async (info) => {
                 try {
-                    //let token =  localStorage.getItem('token') // http://127.0.0.1:5000 https://dm-ypf.onrender.com/user
+                    
                     let response = await fetch('https://repomatic.onrender.com/create_user', {
                         method: "POST",
                         body: JSON.stringify(info),
@@ -63,12 +63,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 
                     let data = await response.json();
                     console.log("respuesta de intento de registro: ",data)
-                    if (!data.ok) {
-                        alert("no se pudo registrar")
+                    if (!data.message && data.error) {
                         setStore({ ...getStore(), registerOk: false })
+                        alert(data.error)
+                        return false
                     } else {
-                        alert("registro exitoso")
                         setStore({ ...getStore(), registerOk: true })
+                        return true
                     }
 
 

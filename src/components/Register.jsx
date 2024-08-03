@@ -53,6 +53,8 @@ const Register = () => {
       if (true_or_false) {
         setIsLoading(false);
         alert("Usuario creado con éxito");
+        navigate('/')
+        // cambiar el alert por un elemento que dependa de un estado local o un sweet alert
       }
     } catch (e) {
       console.log("Error en registro");
@@ -91,12 +93,16 @@ const Register = () => {
         {
           wrongPassDuplicated && <p style={{ color: "white", fontSize: "18px" }}>Tu password no coincide</p>
         }
-        <button type='submit'>Registrarme</button>
-        {
-          isLoading && <img src={gifLoading} alt="gif de carga" style={{ width: '45px', height: '45px', marginLeft: '100px' }} />
-        }
+        <button type='submit'>{isLoading ? (
+          <img
+            src={gifLoading}
+            alt='gift de carga'
+            style={{ width: '30vh', height: '5vh' }}
+          />
+        ) : (<h5>Registrate</h5>)}</button>
+        
         <div className="register-link">
-          <label className="clickLogueate" onClick={()=>navigate('/')}>Ya tenés cuenta? Logueate acá</label>
+          <label className="clickLogueate" onClick={() => navigate('/')}>Ya tenés cuenta? Logueate acá</label>
         </div>
       </form>
     </div>
