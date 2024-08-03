@@ -1,3 +1,14 @@
 .logo_and_title{
-    margin-right: 5vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
+.logo {
+    max-width: 15%;
+    height: auto;
+    display: block;
+    margin-right: 3vh;
+  }
+  .title_navbar{
+    font-weight: 900;
+  }

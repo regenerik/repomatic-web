@@ -1,5 +1,6 @@
 .wrapper {
     width: 420px;
+    height: 420px;
     background-color: transparent;
     border: 2px solid rgba(255, 255, 255, .2);
     backdrop-filter: blur(20px);
@@ -7,7 +8,6 @@
     border-radius: 10px;
     padding: 25px 40px;
     position: relative;
-    top: 11vh; /* Ajusta el valor según sea necesario */
 }
 .wrapper h1 {
     font-size: 36px;

@@ -7,6 +7,7 @@ import LoginRegisterView from './views/LoginRegisterView.jsx';
 import injectContext from "./js/store/appContext";
 import Main from './views/Main.jsx'
 import SaberMas from './views/SaberMas.jsx';
+import Admin from './views/Admin.jsx';
 
 
 const Layout = () => {
@@ -24,6 +25,7 @@ const Layout = () => {
                 <Route exact path="/main" element={<Main/>}/>
                 <Route exact path="/loginregister" element={<LoginRegisterView/>}/>
                 <Route exact path="/plus" element={<SaberMas/>}/>
+                <Route exact path="/admin" element={<Admin/>}/>
                 <Route exact path="/*" element={<NotFound/>}/>
             </Routes>
         </BrowserRouter>

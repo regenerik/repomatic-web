@@ -42,6 +42,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     setStore({ ...store, userName: data.name, token: data.access_token })
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('name', data.name);
+                    localStorage.setItem('admin', data.admin);
 
 
                 } catch (e) {
@@ -98,6 +99,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 setStore({ ...store, token: "", userName: "" })
                 localStorage.removeItem('token');
                 localStorage.removeItem('name');
+                localStorage.removeItem('admin');
             },
             getReportList: async () =>{
                 try{

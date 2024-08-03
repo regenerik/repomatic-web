@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Context } from '../js/store/appContext';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Navbar.css';
+import logo from '../img/apoyo_gestion_web.png'
 
 const Navbar = () => {
     const { actions } = useContext(Context);
@@ -9,6 +10,7 @@ const Navbar = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem('token')
     const name = localStorage.getItem('name')
+    const admin = localStorage.getItem('admin')
     const isActive = (path) => location.pathname === path ? 'nav-link active' : 'nav-link';
 
 
@@ -22,7 +24,8 @@ const Navbar = () => {
         <nav className="container-fluid navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
                 <div className='logo_and_title'>
-                    <Link className={isActive('/')} to="/">Repomatic</Link>
+                    <img className="logo" src={logo} alt="logo apoyo a la gestión" />
+                    <Link className={isActive('/')} to="/"><h4 className='title_navbar'>Repomatic</h4></Link>
                 </div>
 
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,7 +60,9 @@ const Navbar = () => {
                                 </a>
 
                                 <ul className="dropdown-menu">
-                                    <li><div className="dropdown-item" >Info</div></li>
+                                {
+                                    admin && <li><div className="dropdown-item" onClick={()=>navigate("/admin")} >Admin</div></li>
+                                }                                  
                                     <li><div className="dropdown-item" >Configuración</div></li>
                                     <li><div className="dropdown-item" onClick={handlerLogOut}>Log-out</div></li>
                                 </ul>
