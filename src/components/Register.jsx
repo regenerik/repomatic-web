@@ -96,7 +96,7 @@ const Register = () => {
           isLoading && <img src={gifLoading} alt="gif de carga" style={{ width: '45px', height: '45px', marginLeft: '100px' }} />
         }
         <div className="register-link">
-          <label className="clickLogueate" onClick={navigate('/')}>Ya tenés cuenta? Logueate acá</label>
+          <label className="clickLogueate" onClick={()=>navigate('/')}>Ya tenés cuenta? Logueate acá</label>
         </div>
       </form>
     </div>
