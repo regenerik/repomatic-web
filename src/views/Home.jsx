@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar.jsx';
 import './Home.css';
 import Login from '../components/Login.jsx';
@@ -10,6 +11,7 @@ import upcomingImage from '../img/upcoming_image-min.jpg';
 const Home = () => {
     const token = localStorage.getItem('token');
     const name = localStorage.getItem('name');
+    const navigate = useNavigate()
 
     return (
         <div className='total_home'>
@@ -32,7 +34,7 @@ const Home = () => {
                                 <div className="update-content home-text">
                                     <h2>¿Sabías que podés pedir actualización de tus reportes cuando quieras?</h2>
                                     <p>No dejes de visitar nuestra sección de reportes y mantener tus datos al día.</p>
-                                    <a href="/reportes" className="btn-action">Ir a Reportes</a>
+                                    <h5 onClick={()=> navigate('./main')} className="btn-action">Ir a Reportes</h5>
                                 </div>
                                 <div className="update-image home-image">
                                     <img src={updateImage} alt="Actualización de reportes" />
