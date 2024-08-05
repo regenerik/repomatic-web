@@ -1,9 +1,9 @@
 const getState = ({ getStore, getActions, setStore }) => {
     return {
         store: {
-            personas: ["Pedro", "Maria"],
             registerOk: true,
             reportes_disponibles: [],
+            reportes_no_disponibles: [],
             userName: ""
         },
         actions: {
@@ -30,30 +30,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (e) {
                     console.error(e)
                     return false
-                }
-            },
-            simplificado: async () => {
-                try {
-                    let payload = {
-                        username: "34490395",
-                        password: "mentira1",
-                        url: "https://www.campuscomercialypf.com/totara/reportbuilder/report.php?id=133"
-                    }
-                    const response = await fetch('https://repomatic.onrender.com/recuperar_reporte', {
-                        method: 'POST',
-                        body: JSON.stringify(payload),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': '1803-1989-1803-1989'
-                        }
-                    })
-
-
-                    let data = await response.json()
-
-                    alert(data)
-                } catch (e) {
-                    console.error(e)
                 }
             },
             goToRegister: () => {
@@ -155,7 +131,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 try {
                     const result = await fetch('https://repomatic.onrender.com/reportes_disponibles')
                     const data = await result.json()
-                    setStore({ ...getStore(), reportes_disponibles: data.lista_reportes })
+                    setStore({ ...getStore(), reportes_disponibles: data.lista_reportes_disponibles, reportes_no_disponibles:data.lista_reportes_no_disponibles })
                 } catch (e) {
                     console.error(e)
                 }
