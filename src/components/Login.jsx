@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
+import { Context } from '../js/store/appContext.js';
 import './Login.css';
 import { FaUser, FaLock } from 'react-icons/fa';
-import { Context } from '../js/store/appContext.js';
 import { useNavigate } from 'react-router-dom';
 import gifLoading from '../img/Loading_2.gif';
 
