@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar.jsx';
 import './Home.css';
 import Login from '../components/Login.jsx';
-import reportImage from '../img/report_image-min.jpg';
-import updateImage from '../img/update_image-min.jpg';
-import apiImage from '../img/api_image-min.jpg';
-import upcomingImage from '../img/upcoming_image-min.jpg';
+import reportImage from '../img/report_image-min2.jpg';
+import updateImage from '../img/update_image-min2.jpg';
+import apiImage from '../img/api_image-min2.jpg';
+import upcomingImage from '../img/upcoming_image-min2.jpg';
 
 const Home = () => {
     const token = localStorage.getItem('token');

@@ -1,8 +1,8 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import './SaberMas.css';
-import teamWorkingImg from '../img/team_working-min.jpg'; // Imagen de personas trabajando
-import happyPersonImg from '../img/happy_person-min.jpg'; // Imagen de alguien feliz mirando al horizonte
+import teamWorkingImg from '../img/team_working-min2.jpg'; // Imagen de personas trabajando
+import happyPersonImg from '../img/happy_person-min2.jpg'; // Imagen de alguien feliz mirando al horizonte
 
 const SaberMas = () => {
   return (
