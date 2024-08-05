@@ -66,7 +66,6 @@ const ReportList = () => {
                     )
                 })
             }
-            <button onClick={actions.simplificado}>TEST-BORRAR</button>
         </div>
     )
 }   
