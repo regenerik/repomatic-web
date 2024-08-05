@@ -9,10 +9,14 @@ const ReportList = () => {
     const [loadingIndex, setLoadingIndex] = useState(null);
     let dni = localStorage.getItem('dni');
 
+    const toGetReportList = async() =>{
+        actions.getReportList()
+    }
+
     useEffect(() => {
         // Llamar al action para obtener la lista de reportes disponibles y no disponibles
-        actions.getReportList();
-    }, [actions]);
+        toGetReportList();
+    }, []);
 
     const handlerUpdateReport = async (dni, report_url, index) => {
         setLoadingIndex(index);  // Seteamos el índice del ítem que está en loading
