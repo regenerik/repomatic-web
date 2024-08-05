@@ -1,8 +1,164 @@
-.home_general {
+.total_home{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-.titulo{
-    margin-top: 3vh;
+/* Wrapper principal que centra el contenido */
+.home-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+
+    min-height: 100vh;
+}
+
+/* Card principal con fondo ligeramente oscuro y bordes redondeados */
+.home-content {
+    max-width: 900px;
+    width: 100%;
+    background-color: #f0f0f0; /* Fondo ligeramente más oscuro que el blanco */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    z-index: 2; /* Asegura que el contenido esté sobre cualquier fondo */
+}
+
+/* Estilos para la primera sección con texto sobre la imagen */
+.section-welcome {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    max-height: 400px; /* Limita la altura máxima de la imagen */
+}
+
+.welcome-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    max-height: 400px; /* Asegura que la imagen no sobrepase esta altura */
+}
+
+.welcome-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para mejor legibilidad */
+    padding: 2rem; /* Aumentar el padding para hacer la caja más grande */
+    border-radius: 8px;
+    width: 80%; /* Aumenta el ancho de la caja */
+    max-width: 600px; /* Limitar el ancho máximo */
+}
+
+.welcome-text h1 {
+    margin: 0;
+    font-size: 2rem; /* Tamaño del texto para pantallas grandes */
+    font-weight: bold; /* Hacer el texto 'Bienvenido a Repomatic, David' más grueso */
+}
+
+.welcome-text h2 {
+    margin: 0;
+    font-size: 1.5rem; /* Tamaño del subtítulo para pantallas grandes */
+    font-weight: normal; /* Subtítulo con grosor normal */
+}
+
+/* Estilos para las demás secciones */
+.home-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.home-section.reverse {
+    flex-direction: row-reverse;
+}
+
+.home-text {
+    flex: 1;
+    padding: 1rem;
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.home-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.home-image img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+/* Botones de acción */
+.btn-action {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #007bff;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-action:hover {
+    background-color: #0056b3;
+}
+
+/* Responsiveness */
+@media (min-width: 768px) {
+    .home-section {
+        flex-direction: row;
+        text-align: left;
+    }
+
+    .home-text {
+        flex: 1;
+        padding-right: 2rem;
+    }
+
+    .home-image {
+        flex: 1;
+        padding-left: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .home-image img {
+        width: 100%;
+        height: auto;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Responsiveness para titulo en pantallas más pequeñas */
+@media (max-width: 640px) {
+    .welcome-text h1 {
+        font-size: 1.5rem; /* Reducir el tamaño del texto en pantallas pequeñas */
+        font-weight: bold;
+    }
+
+    .welcome-text h2 {
+        font-size: 1rem; /* Reducir el tamaño del subtítulo en pantallas pequeñas */
+        font-weight: normal;
+    }
 }
