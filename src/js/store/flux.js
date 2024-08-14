@@ -107,19 +107,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const store = getStore()
                 setStore({ ...store, wrongPass: booleano })
             },
-            button1: async () => {
-                try {
-                    let response = await fetch('https://dm-ypf.onrender.com/')
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    const data = await response.json();
-
-
-                } catch (e) {
-                    console.error(e)
-                }
-            },
             logout: () => {
                 const store = getStore()
                 setStore({ ...store, token: "", userName: "" })

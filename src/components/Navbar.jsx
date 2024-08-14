@@ -55,9 +55,9 @@ const Navbar = () => {
                         }
                         {token && (
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     {name}
-                                </a>
+                                </div>
 
                                 <ul className="dropdown-menu">
                                 {
