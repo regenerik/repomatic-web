@@ -11,7 +11,7 @@ const Main = () => {
 
     useEffect(() => {
         actions.getReportList()
-    }, [actions])
+    }, [])
 
     return (
         <div className='mainTotal'>

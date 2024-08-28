@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { Context } from '../js/store/appContext';
 import './ReportList.css';
 import gifLoading from "../img/Loading_2.gif";
@@ -7,16 +7,8 @@ import gifLoading2 from "../img/loading_4.gif";
 const ReportList = () => {
     const { store, actions } = useContext(Context);
     const [loadingIndex, setLoadingIndex] = useState(null);
+    const [type , setType] = useState("")
     let dni = localStorage.getItem('dni');
-
-    const toGetReportList = async() =>{
-        actions.getReportList()
-    }
-
-    useEffect(() => {
-        // Llamar al action para obtener la lista de reportes disponibles y no disponibles
-        toGetReportList();
-    }, []);
 
     const handlerUpdateReport = async (dni, report_url, index) => {
         setLoadingIndex(index);  // Seteamos el índice del ítem que está en loading
@@ -40,8 +32,15 @@ const ReportList = () => {
         }
     };
 
+    const handlerDownloadReport = (url) => {
+        let tipo = prompt("En que formato lo necesitas? Escribe un formato disponible: csv , xlsx , json , html")
+        setType(tipo)
+        actions.downloadReport(url, type)
+    }
+
     return (
         <div className='contenedor_report_list'>
+            <button onClick={()=>actions.getReportList()}>Cargar/Actualizar</button>
             <h3 className='mb-4'>Reportes Disponibles</h3>
 
             {
@@ -56,20 +55,26 @@ const ReportList = () => {
                                     <h5 className="mb-1 titulo_nombre">{formattedTitle}</h5>
                                     <div className='grupo_derecha'>
                                         <small className='me-2'>{item.created_at}</small>
-                                        <small>
-                                            {loadingIndex === index ? (
-                                                <img
-                                                    src={gifLoading}
-                                                    alt='gif de carga'
-                                                    style={{ width: '30vh', height: '5vh' }}
-                                                />
-                                            )
-                                                :
-                                                (
-                                                    <button type='submit' className="btn btn-outline-light boton_actualizar" onClick={() => handlerUpdateReport(dni, item.report_url, index)}>Actualizar</button>
+                                        <div className='d-flex flex-column'>
+                                            <small className='mt-1'>
+                                                {loadingIndex === index ? (
+                                                    <img
+                                                        src={gifLoading}
+                                                        alt='gif de carga'
+                                                        style={{ width: '30vh', height: '5vh' }}
+                                                    />
                                                 )
-                                            }
-                                        </small>
+                                                    :
+                                                    (
+                                                        <button type='submit' className="btn btn-outline-light boton_actualizar" onClick={() => handlerUpdateReport(dni, item.report_url, index)}>Actualizar</button>
+                                                    )
+                                                }
+                                            </small>
+                                            <small className='mt-1'>
+                                                <button type='submit' className="btn btn-outline-light boton_actualizar" onClick={() => handlerDownloadReport(item.report_url)}>Descargar</button>
+                                            </small>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <p className="mb-1">Tamaño en MB: {formattedSize}</p>
@@ -84,7 +89,7 @@ const ReportList = () => {
 
             {
                 store.reportes_no_disponibles ? (
-                    
+
                     store.reportes_no_disponibles.map((item, index) => {
                         const formattedTitle = item.title.replace(/\+/g, ' ');
                         const formattedUrl = item.report_url.split('?')[1];

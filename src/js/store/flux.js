@@ -155,7 +155,43 @@ const getState = ({ getStore, getActions, setStore }) => {
                     console.error('Error uploading image:', error);
                     return null;
                 }
+            },
+            downloadReport: async(url, type) => {
+                try {
+                    let response = await fetch("https://repomatic.onrender.com/obtener_reporte", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `1803-1989-1803-1989`
+                        },
+                        body: JSON.stringify({ "reporte_url": url, "file_type": type })
+                    });
+            
+                    if (!response.ok) {
+                        throw new Error(`Error al descargar el reporte: ${response.status} ${response.statusText}`);
+                    }
+            
+                    let blob = await response.blob();
+            
+                    // Obtener la parte significativa de la URL y generar el nombre del archivo
+                    const formattedUrl = url.split('?')[1].slice(0, 15); // Tomamos los primeros 15 caracteres de la URL después del '?'
+                    let fileName = `${formattedUrl}.${type}`; // Nombre del archivo: parte de la URL + tipo de archivo
+            
+                    let downloadUrl = window.URL.createObjectURL(blob);
+            
+                    let a = document.createElement("a");
+                    a.href = downloadUrl;
+                    a.download = fileName; // Descargar el archivo con el nombre generado
+                    document.body.appendChild(a);
+                    a.click();
+            
+                    window.URL.revokeObjectURL(downloadUrl);
+                    document.body.removeChild(a);
+                } catch (e) {
+                    console.error("Error al descargar el reporte:", e);
+                }
             }
+             
         }
     };
 };
