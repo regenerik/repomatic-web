@@ -63,7 +63,7 @@ const Navbar = () => {
                                 {
                                     admin && <li><div className="dropdown-item" onClick={()=>navigate("/admin")} >Admin</div></li>
                                 }                                  
-                                    <li><div className="dropdown-item" >Configuración</div></li>
+                                    <li><div className="dropdown-item" onClick={()=> navigate("/profile")}>Perfil</div></li>
                                     <li><div className="dropdown-item" onClick={handlerLogOut}>Log-out</div></li>
                                 </ul>
                             </li>

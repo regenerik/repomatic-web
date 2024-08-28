@@ -4,7 +4,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             registerOk: true,
             reportes_disponibles: [],
             reportes_no_disponibles: [],
-            userName: ""
+            userName: "",
+            user:{username:"", dni:"", admin:"", email:"", url_image:""},
         },
         actions: {
             updateReport: async (payload) => {
@@ -64,11 +65,13 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }
                     console.log("Hola ", data.name)
                     const store = getStore()
-                    setStore({ ...store, userName: data.name, token: data.access_token })
+                    setStore({ ...store, userName: data.name, token: data.access_token , user:{username:data.name, dni:data.dni, admin:data.admin, email:data.email, url_image:data.url_image}})
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('name', data.name);
                     localStorage.setItem('admin', data.admin);
                     localStorage.setItem('dni', data.dni);
+                    localStorage.setItem('url_image', data.url_image);
+                    localStorage.setItem('email',data.email)
 
 
                 } catch (e) {
@@ -121,6 +124,36 @@ const getState = ({ getStore, getActions, setStore }) => {
                     setStore({ ...getStore(), reportes_disponibles: data.lista_reportes_disponibles, reportes_no_disponibles:data.lista_reportes_no_disponibles })
                 } catch (e) {
                     console.error(e)
+                }
+            },
+            uploadImageToCloudinary: async (imageFile) => {
+
+                const preset_name = "j9z88xqz";
+                const cloud_name = "drlqmol4c"      
+
+                const data = new FormData();
+                data.append('file', imageFile);
+                data.append('upload_preset', preset_name);
+
+                try {
+                    const response = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+                        method: 'POST',
+                        body: data
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to upload image');
+                    }
+
+                    const file = await response.json();
+                    const originalUrl = file.secure_url;
+
+                    console.log("Original URL: ", originalUrl); // Verificar la URL original
+
+                    return originalUrl;
+                } catch (error) {
+                    console.error('Error uploading image:', error);
+                    return null;
                 }
             }
         }
