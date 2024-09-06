@@ -23,13 +23,13 @@ const Admin = () => {
                 return <Usuarios />;
         }
     };
-    const admin = localStorage.getItem('admin')
+    const admin = JSON.parse(localStorage.getItem('admin'));
     const token = localStorage.getItem('token')
     return (
         <div>
             <Navbar />
             {
-                admin && token ? (
+                admin === true && token ? (
                     <div>
                         <div className="admin-container">
                             <div className="admin-tabs">

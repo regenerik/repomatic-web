@@ -9,6 +9,7 @@ import Main from './views/Main.jsx'
 import SaberMas from './views/SaberMas.jsx';
 import Admin from './views/Admin.jsx';
 import Profile from './views/Profile.jsx'
+import Experiencia from './views/Experiencia.jsx';
 
 const Layout = () => {
 
@@ -26,6 +27,7 @@ const Layout = () => {
                 <Route exact path="/plus" element={<SaberMas/>}/>
                 <Route exact path="/admin" element={<Admin/>}/>
                 <Route exact path="/profile" element={<Profile />}/>
+                <Route exact path="/experience" element={<Experiencia />}/>
                 <Route exact path="/*" element={<NotFound/>}/>
             </Routes>
         </BrowserRouter>

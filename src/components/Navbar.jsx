@@ -38,9 +38,16 @@ const Navbar = () => {
                         </li>
                         {
                             token && (
-                        <li className="nav-item">
-                            <Link className={isActive('/main')} to="/main">Reportes</Link>
-                        </li>
+                                <li className="nav-item">
+                                    <Link className={isActive('/main')} to="/main">Reportes</Link>
+                                </li>
+                            )
+                        }
+                        {
+                            token && (
+                                <li className="nav-item">
+                                    <Link className={isActive('/experience')} to="/experience">Experiencia</Link>
+                                </li>
                             )
                         }
                         <li className="nav-item">
@@ -60,10 +67,10 @@ const Navbar = () => {
                                 </div>
 
                                 <ul className="dropdown-menu">
-                                {
-                                    admin && <li><div className="dropdown-item" onClick={()=>navigate("/admin")} >Admin</div></li>
-                                }                                  
-                                    <li><div className="dropdown-item" onClick={()=> navigate("/profile")}>Perfil</div></li>
+                                    {
+                                        admin && <li><div className="dropdown-item" onClick={() => navigate("/admin")} >Admin</div></li>
+                                    }
+                                    <li><div className="dropdown-item" onClick={() => navigate("/profile")}>Perfil</div></li>
                                     <li><div className="dropdown-item" onClick={handlerLogOut}>Log-out</div></li>
                                 </ul>
                             </li>

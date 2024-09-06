@@ -63,15 +63,17 @@ const getState = ({ getStore, getActions, setStore }) => {
                     if (!data.access_token) {
                         throw new Error("La pifiaste con las credenciales. ", " Aca la data:", data)
                     }
-                    console.log("Hola ", data.name)
+                    console.log("soy admin?", data.admin)
                     const store = getStore()
                     setStore({ ...store, userName: data.name, token: data.access_token , user:{username:data.name, dni:data.dni, admin:data.admin, email:data.email, url_image:data.url_image}})
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('name', data.name);
-                    localStorage.setItem('admin', data.admin);
+                    localStorage.setItem('admin', JSON.stringify(data.admin));
                     localStorage.setItem('dni', data.dni);
                     localStorage.setItem('url_image', data.url_image);
                     localStorage.setItem('email',data.email)
+                    let guardado = JSON.parse(localStorage.getItem('admin'));
+                    console.log("guardado contiene",guardado)
 
 
                 } catch (e) {
@@ -190,7 +192,30 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (e) {
                     console.error("Error al descargar el reporte:", e);
                 }
-            }
+            },
+            uploadFile: async (formData) => {
+                try {
+                  let response = await fetch("http://repomatic.onrender.com/create_resumes", {
+                    method: 'POST',
+                    body: formData,
+                  });
+              
+                  if (!response.ok) {
+                    throw new Error('Error en la subida del archivo');
+                  }
+              
+                  const data = await response.json();
+                  console.log('Archivo subido con éxito:', data);
+              
+                  // Guardamos el resultado en el store para que el front pueda acceder
+                  setStore({...getStore(), message: data.message });
+              
+                  return data;
+                } catch (error) {
+                  console.error('Error al subir el archivo:', error);
+                  throw error;
+                }
+              }
              
         }
     };
