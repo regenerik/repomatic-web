@@ -195,7 +195,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             uploadFile: async (formData) => {
                 try {
-                  let response = await fetch("http://repomatic.onrender.com/create_resumes", {
+                  let response = await fetch("https://repomatic.onrender.com/create_resumes", {
                     method: 'POST',
                     body: formData,
                   });
