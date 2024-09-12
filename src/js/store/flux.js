@@ -195,27 +195,27 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             uploadFile: async (formData) => {
                 try {
-                  let response = await fetch("https://repomatic.onrender.com/create_resumes", {
-                    method: 'POST',
-                    body: formData,
-                  });
-              
-                  if (!response.ok) {
-                    throw new Error('Error en la subida del archivo');
-                  }
-              
-                  const data = await response.json();
-                  console.log('Archivo subido con éxito:', data);
-              
-                  // Guardamos el resultado en el store para que el front pueda acceder
-                  setStore({...getStore(), message: data.message });
-              
-                  return data;
+                    // Hacemos el fetch a la URL del backend
+                    let response = await fetch("https://repomatic.onrender.com/create_resumes", {
+                        method: 'POST',
+                        body: formData, // Asegurarse de que el archivo se esté enviando correctamente
+                    });
+            
+                    // Verificamos que la respuesta sea OK
+                    if (!response.ok) {
+                        throw new Error('Error en la subida del archivo');
+                    }
+            
+                    // Convertimos la respuesta a un Blob (porque es un archivo binario)
+                    const blob = await response.blob();
+                    console.log('Archivo subido con éxito y recibido como blob.');
+            
+                    return blob; // Devolvemos el blob al componente para que lo use en la descarga
                 } catch (error) {
-                  console.error('Error al subir el archivo:', error);
-                  throw error;
+                    console.error('Error al subir el archivo:', error);
+                    throw error;
                 }
-              }
+            }
              
         }
     };

@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { Context } from '../js/store/appContext.js';
 
-
 const InstantResume = () => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { actions, store } = useContext(Context); // Agregamos `store` para acceder al estado global
+  const [downloadUrl, setDownloadUrl] = useState(null); 
+  const { actions } = useContext(Context);
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -16,16 +16,20 @@ const InstantResume = () => {
     if (file) {
       const formData = new FormData();
       formData.append('file', file);
-      setLoading(true); // Mostrar el mensaje de carga
+      setLoading(true);
 
       try {
         // Llamada al action
-        await actions.uploadFile(formData);
-        setLoading(false); // Ocultar el mensaje de carga cuando termine
+        const blob = await actions.uploadFile(formData);
+
+        // Crear URL de descarga para el archivo Excel
+        const url = URL.createObjectURL(blob);
+        setDownloadUrl(url); 
+        setLoading(false);
         alert('Proceso finalizado. Descarga habilitada.');
       } catch (error) {
         console.error('Error al subir el archivo:', error);
-        setLoading(false); // En caso de error, ocultar el mensaje de carga
+        setLoading(false);
         alert('Hubo un problema al subir el archivo');
       }
     } else {
@@ -35,26 +39,22 @@ const InstantResume = () => {
 
   const descargarArchivo = () => {
     const element = document.createElement('a');
-    const file = new Blob([store.message], { type: 'text/plain' }); // Utilizamos el `store.message`
-    element.href = URL.createObjectURL(file);
-    element.download = 'evaluacion_estaciones.txt';
+    element.href = downloadUrl;
+    element.download = 'evaluacion_estaciones.xlsx'; 
     document.body.appendChild(element);
     element.click();
+    document.body.removeChild(element); 
   };
 
   return (
     <div>
       <h2>Subir archivo Excel</h2>
-      <h6>Esta herramienta es muy simple. Podes subirle un excel "xlsx" que su primera columna sea "APIES" y la segunda "COMENTARIO". Puede ser de 1 hasta 30 APIES en simultaneo con sus comentarios en la segunda columna sin problemas. Recordá que por cada APIES va a demorar +5,1 segundos. Asique dependiendo de la cantidad que subas, podés ir haciendo la cuenta para sacar la demora.</h6>
-      <h6>Objetivo: Hacemos un resumen de los comentarios de cada estación de servicio(APIES) via servicio Openai(Inteligencia Artificial), y te lo devolvemos todo en un ".txt" bien formateado.</h6>
-      {/* Si está cargando, mostramos un mensaje de carga */}
       {loading ? (
         <div>
           <p>Procesando archivo... Esto puede tardar 5.1 segundos por APIES.</p>
         </div>
-      ) : store.message ? (
+      ) : downloadUrl ? (
         <div>
-          {/* Botón para descargar el archivo cuando se haya subido */}
           <button onClick={descargarArchivo}>Descargar Evaluación</button>
         </div>
       ) : (
@@ -68,4 +68,3 @@ const InstantResume = () => {
 };
 
 export default InstantResume;
-
