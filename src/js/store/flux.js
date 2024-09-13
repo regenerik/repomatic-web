@@ -12,10 +12,12 @@ const getState = ({ getStore, getActions, setStore }) => {
         },
         actions: {
             toggleAdmin: async (email, admin) => {
+                console.log("entro en toggleadmin")
                 let payload ={
                     email:email,
                     admin:admin
                 }
+                console.log("payload preparado: ",payload)
                 try{
                     let response = await fetch("https://repomatic.onrender.com/update_admin",{
                         body: JSON.stringify(payload),
@@ -24,10 +26,13 @@ const getState = ({ getStore, getActions, setStore }) => {
                             'Content-Type': 'application/json',
                         }
                     })
-                    if(response.ok){
+                    let data = await response.json()
+                    console.log("data: ", data)
+                    if(data.message){
                         console.log("Admin updated")
                         let currentTrigger = getStore().trigger
                         setStore({...getStore(),trigger: !currentTrigger })
+                        return data
                     }else{
                         console.log("algo salio mal actualizando el estado de admin")
                     }
@@ -63,13 +68,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             deleteUser: (userId) => {
                 const store = getStore();
                 setStore({...getStore(), users: store.users.filter((user) => user.id !== userId) });
-            },
-            toggleAdmin: (userId) => {
-                const store = getStore();
-                const updatedUsers = store.users.map((user) => 
-                  user.id === userId ? { ...user, isAdmin: !user.isAdmin } : user
-                );
-                setStore({...getStore(), users: updatedUsers });
             },
             updateReport: async (payload) => {
 

@@ -19,12 +19,23 @@ const Usuarios = () => {
     }
   };
 
-  const handleAdminToggle = (user) => {
-    const message = user.admin ? 'quitarle' : 'darle';
-    const confirmed = window.confirm(`¿Estás seguro de que deseas ${message} acceso de administrador a ${user.name}?`);
-    if (confirmed) {
-      actions.toggleAdmin(user.email,user.admin); // Acción para cambiar el estado de admin del usuario
+  const handleAdminToggle = async (user) => {
+    try{
+      const message = user.admin ? 'quitarle' : 'darle';
+      const confirmed = window.confirm(`¿Estás seguro de que deseas ${message} acceso de administrador a ${user.name}?`);
+      if (confirmed) {
+        console.log("confirmado cambio de admin para si o no")
+        const response = await actions.toggleAdmin(user.email, user.admin); // Acción para cambiar el estado de admin del usuario
+        console.log(response.message);
+        // if (response.admin !== undefined) {
+        //   // Actualizar el estado de admin en el frontend si es necesario
+        //   user.admin = response.admin;
+        // }
+      }
+    }catch(e){
+      console.error(e)
     }
+
   };
 
   useEffect(()=>{
