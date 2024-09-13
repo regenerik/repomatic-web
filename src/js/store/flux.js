@@ -8,8 +8,34 @@ const getState = ({ getStore, getActions, setStore }) => {
             reportes_no_disponibles: [],
             userName: "",
             user:{username:"", dni:"", admin:"", email:"", url_image:""},
+            trigger: false
         },
         actions: {
+            toggleAdmin: async (email, admin) => {
+                let payload ={
+                    email:email,
+                    admin:admin
+                }
+                try{
+                    let response = await fetch("https://repomatic.onrender.com/update_admin",{
+                        body: JSON.stringify(payload),
+                        method: "PUT",
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    if(response.ok){
+                        console.log("Admin updated")
+                        let currentTrigger = getStore().trigger
+                        setStore({...getStore(),trigger: !currentTrigger })
+                    }else{
+                        console.log("algo salio mal actualizando el estado de admin")
+                    }
+
+                }catch(e){
+                    console.error(e)
+                }
+            },
             getUsers: async () => {
                 console.log("getUsers ejecutándose...");
                 let token = localStorage.getItem('token');

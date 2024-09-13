@@ -23,13 +23,13 @@ const Usuarios = () => {
     const message = user.admin ? 'quitarle' : 'darle';
     const confirmed = window.confirm(`¿Estás seguro de que deseas ${message} acceso de administrador a ${user.name}?`);
     if (confirmed) {
-      actions.toggleAdmin(user.id); // Acción para cambiar el estado de admin del usuario
+      actions.toggleAdmin(user.email,user.admin); // Acción para cambiar el estado de admin del usuario
     }
   };
 
   useEffect(()=>{
     actions.getUsers(); // Acción para obtener los usuarios
-  },[])
+  },[store.trigger])
 
   return (
     <div className="usuarios-container">
