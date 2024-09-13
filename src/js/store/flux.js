@@ -20,7 +20,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return;
                 }
             
-                let response = await fetch("http://localhost:5000/users", {
+                let response = await fetch("https://repomatic.onrender.com/users", {
                     headers: {
                         "Authorization": `Bearer ${token}`
                     }
