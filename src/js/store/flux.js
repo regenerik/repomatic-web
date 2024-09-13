@@ -1,6 +1,8 @@
 const getState = ({ getStore, getActions, setStore }) => {
     return {
         store: {
+            users: [],
+            userForEdit: null,
             registerOk: true,
             reportes_disponibles: [],
             reportes_no_disponibles: [],
@@ -8,6 +10,41 @@ const getState = ({ getStore, getActions, setStore }) => {
             user:{username:"", dni:"", admin:"", email:"", url_image:""},
         },
         actions: {
+            getUsers: async () => {
+                console.log("getUsers ejecutándose...");
+                let token = localStorage.getItem('token');
+
+                
+                if (!token) {
+                    console.error("El token es undefined. Asegurate de que esté guardado correctamente.");
+                    return;
+                }
+            
+                let response = await fetch("http://localhost:5000/users", {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+            
+                let data = await response.json();
+                if (data.lista_usuarios) {
+                    setStore({ ...getStore(), users: data.lista_usuarios });
+                }
+            },
+            setUserForEdit: (user) => {
+                setStore({...getStore(), userForEdit: user });
+            },
+            deleteUser: (userId) => {
+                const store = getStore();
+                setStore({...getStore(), users: store.users.filter((user) => user.id !== userId) });
+            },
+            toggleAdmin: (userId) => {
+                const store = getStore();
+                const updatedUsers = store.users.map((user) => 
+                  user.id === userId ? { ...user, isAdmin: !user.isAdmin } : user
+                );
+                setStore({...getStore(), users: updatedUsers });
+            },
             updateReport: async (payload) => {
 
                 try {
@@ -56,30 +93,43 @@ const getState = ({ getStore, getActions, setStore }) => {
                         headers: {
                             'Content-Type': 'application/json'
                         }
-                    })
-
-                    const data = await response.json()
-
+                    });
+            
+                    const data = await response.json();
+            
                     if (!data.access_token) {
-                        throw new Error("La pifiaste con las credenciales. ", " Aca la data:", data)
+                        throw new Error("La pifiaste con las credenciales. ", " Aca la data:", data);
                     }
-                    console.log("soy admin?", data.admin)
-                    const store = getStore()
-                    setStore({ ...store, userName: data.name, token: data.access_token , user:{username:data.name, dni:data.dni, admin:data.admin, email:data.email, url_image:data.url_image}})
-                    localStorage.setItem('token', data.token);
+            
+                    
+                    // Guardar token en localStorage
+                    localStorage.setItem('token', data.access_token);
+                    
+                    // Guardar otros datos
                     localStorage.setItem('name', data.name);
                     localStorage.setItem('admin', JSON.stringify(data.admin));
                     localStorage.setItem('dni', data.dni);
                     localStorage.setItem('url_image', data.url_image);
-                    localStorage.setItem('email',data.email)
-                    let guardado = JSON.parse(localStorage.getItem('admin'));
-                    console.log("guardado contiene",guardado)
-
-
+                    localStorage.setItem('email', data.email);
+            
+                    // Guardar en el estado global
+                    setStore({
+                        ...getStore(),
+                        userName: data.name,
+                        token: data.access_token,
+                        user: {
+                            username: data.name,
+                            dni: data.dni,
+                            admin: data.admin,
+                            email: data.email,
+                            url_image: data.url_image
+                        }
+                    });
+            
+            
                 } catch (e) {
-                    console.error(e)
+                    console.error(e);
                 }
-
             },
             register: async (info) => {
                 try {
