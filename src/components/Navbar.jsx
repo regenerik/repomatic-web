@@ -10,7 +10,7 @@ const Navbar = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem('token')
     const name = localStorage.getItem('name')
-    const admin = localStorage.getItem('admin')
+    const admin = JSON.parse(localStorage.getItem('admin'));
     const isActive = (path) => location.pathname === path ? 'nav-link active' : 'nav-link';
 
 
