@@ -20,7 +20,7 @@ const Experiencia = () => {
           case 'ResumenTotal':
               return <TotalResume />;
           default:
-              return <GetOneResume />;
+              return <InstantResume />;
       }
   };
   const admin = JSON.parse(localStorage.getItem('admin'));
