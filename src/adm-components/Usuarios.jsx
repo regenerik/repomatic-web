@@ -20,7 +20,7 @@ const Usuarios = () => {
   };
 
   const handleAdminToggle = (user) => {
-    const message = user.isAdmin ? 'quitarle' : 'darle';
+    const message = user.admin ? 'quitarle' : 'darle';
     const confirmed = window.confirm(`¿Estás seguro de que deseas ${message} acceso de administrador a ${user.name}?`);
     if (confirmed) {
       actions.toggleAdmin(user.id); // Acción para cambiar el estado de admin del usuario
@@ -46,9 +46,9 @@ const Usuarios = () => {
                 <button className="btn editar" onClick={() => handleEdit(user)}>Editar</button>
                 <button className="btn eliminar" onClick={() => handleDelete(user)}>Eliminar</button>
                 <button 
-                  className={`btn admin ${user.isAdmin ? 'admin-activo' : 'admin-inactivo'}`} 
+                  className={`btn admin ${user.admin ? 'admin-activo' : 'admin-inactivo'}`} 
                   onClick={() => handleAdminToggle(user)}>
-                  {user.isAdmin ? 'Admin' : 'No Admin'}
+                  {user.admin ? 'Admin' : 'No Admin'}
                 </button>
               </div>
             </div>
