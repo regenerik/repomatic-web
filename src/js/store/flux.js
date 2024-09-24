@@ -70,14 +70,14 @@ const getState = ({ getStore, getActions, setStore }) => {
                 setStore({...getStore(), users: store.users.filter((user) => user.id !== userId) });
             },
             updateReport: async (payload) => {
-
+                const apiKey = process.env.REACT_APP_API_KEY
                 try {
                     const response = await fetch('https://repomatic.onrender.com/recuperar_reporte', {
                         method: 'POST',
                         body: JSON.stringify(payload),
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': '1803-1989-1803-1989'
+                            'Authorization': apiKey
                         }
                     })
 
@@ -233,12 +233,13 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             },
             downloadReport: async(url, type) => {
+                const apiKey = process.env.REACT_APP_API_KEY
                 try {
                     let response = await fetch("https://repomatic.onrender.com/obtener_reporte", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            "Authorization": `1803-1989-1803-1989`
+                            "Authorization": apiKey
                         },
                         body: JSON.stringify({ "reporte_url": url, "file_type": type })
                     });
@@ -289,7 +290,86 @@ const getState = ({ getStore, getActions, setStore }) => {
                     console.error('Error al subir el archivo:', error);
                     throw error;
                 }
-            }
+            },
+            uploadExcel: async (formData) => {
+                const apiKey = process.env.REACT_APP_API_KEY
+                try {
+                  const response = await fetch('https://repomatic.onrender.com/subir_excel_total', {
+                    method: 'POST',
+                    body: formData,
+                    headers:{
+                        "Authorization":apiKey
+                    }
+                  });
+                  return response;
+                } catch (error) {
+                  console.error('Error al subir el archivo:', error);
+                  throw error;
+                }
+              },
+        
+              // Action para descargar el Excel
+              downloadExcel: async () => {
+                const apiKey = process.env.REACT_APP_API_KEY
+                try {
+                  const response = await fetch('https://repomatic.onrender.com/descargar_excel', {
+                    method: 'GET',
+                    headers:{
+                        "Authorization":apiKey
+                    }
+                  });
+        
+                  if (!response.ok) {
+                    throw new Error('Error al descargar el archivo');
+                  }
+        
+                  const blob = await response.blob();  // Para crear la descarga del archivo
+                  return blob;
+                } catch (error) {
+                  console.error('Error al descargar el archivo:', error);
+                  throw error;
+                }
+              },
+        
+              // Action para eliminar el Excel
+              deleteExcel: async () => {
+                const apiKey = process.env.REACT_APP_API_KEY
+                try {
+                  const response = await fetch('https://repomatic.onrender.com/eliminar_excel_total', {
+                    method: 'DELETE',
+                    headers:{
+                        "Authorization":apiKey
+                    }
+                  });
+                  console.log("este es el response de eliminar: ",response)
+                  return response;
+                } catch (error) {
+                  console.error('Error al eliminar el archivo:', error);
+                  throw error;
+                }
+              },
+              existencia: async()=>{
+                const apiKey = process.env.REACT_APP_API_KEY
+                try{
+                    const response = await fetch('https://repomatic.onrender.com/existencia_excel',{
+                        headers:{
+                            "Authorization":apiKey
+                        }
+                    })
+                    const data = await response.json()
+                    console.log("la data del action existencia es esta: ", data)
+                    if(data.ok){
+                        return data.datetime
+                    }else{
+                        return false
+                    }
+
+
+
+                }catch(e){
+                    console.error(e)
+                }
+              }
              
         }
     };
