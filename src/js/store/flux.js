@@ -310,19 +310,20 @@ const getState = ({ getStore, getActions, setStore }) => {
         
               // Action para descargar el Excel
               downloadExcel: async () => {
+                
                 const apiKey = process.env.REACT_APP_API_KEY
                 try {
-                  const response = await fetch('https://repomatic.onrender.com/descargar_excel', {
+                  const response = await fetch('http://localhost:5000/descargar_excel', {
                     method: 'GET',
                     headers:{
-                        "Authorization":apiKey
+                        "Authorization":apiKey,
                     }
                   });
-        
+                  console.log("Este es el response: ", response)
                   if (!response.ok) {
                     throw new Error('Error al descargar el archivo');
                   }
-        
+                  
                   const blob = await response.blob();  // Para crear la descarga del archivo
                   return blob;
                 } catch (error) {
@@ -368,6 +369,35 @@ const getState = ({ getStore, getActions, setStore }) => {
 
                 }catch(e){
                     console.error(e)
+                }
+              },
+              getOneResume: async (apies) => {
+                const apiKey = process.env.REACT_APP_API_KEY
+                try {
+
+                  const response = await fetch('https://repomatic.onrender.com/get_one_resume', {
+                    method: 'POST',
+                    headers: {
+                      'Authorization':apiKey,
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ apies }), // Enviamos el número de APIES
+                  });
+                  if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', `resumen_estacion_${apies}.xlsx`);
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+                  } else {
+                    throw new Error('Error al descargar el archivo');
+                  }
+                } catch (error) {
+                  console.error('Error fetching resumen:', error);
+                  throw error;
                 }
               }
              
