@@ -135,7 +135,7 @@ const TotalResume = () => {
           <section className='description'>
             <p>
               Esta herramienta permite subir la lista de APIES mensual con sus comentarios en un Excel.
-              La misma queda disponible para hacer recuperación de resúmenes de comentarios en "Resúmenes instantáneos". 
+              La misma queda disponible para hacer recuperación de resúmenes de comentarios en "Obtener un resumen". 
               El excel puede ser pisado por uno nuevo,descargado y/o eliminado.
             </p>
           </section>
