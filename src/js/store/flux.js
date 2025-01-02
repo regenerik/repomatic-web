@@ -197,6 +197,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 try {
                     const result = await fetch('https://repomatic2.onrender.com/reportes_disponibles')
                     const data = await result.json()
+                    console.log("Esta es la data de los reportes disponibles ahora: ", data.lista_reportes_disponibles)
                     setStore({ ...getStore(), reportes_disponibles: data.lista_reportes_disponibles, reportes_no_disponibles:data.lista_reportes_no_disponibles })
                 } catch (e) {
                     console.error(e)
