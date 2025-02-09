@@ -6,6 +6,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             registerOk: true,
             reportes_disponibles: [],
             reportes_no_disponibles: [],
+            reportes_acumulados: [],
             userName: "",
             user:{username:"", dni:"", admin:"", email:"", url_image:""},
             trigger: false
@@ -195,12 +196,17 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             getReportList: async () => {
                 try {
-                    const result = await fetch('https://repomatic2.onrender.com/reportes_disponibles')
-                    const data = await result.json()
-                    console.log("Esta es la data de los reportes no disponibles ahora: ", data.lista_reportes_no_disponibles)
-                    setStore({ ...getStore(), reportes_disponibles: data.lista_reportes_disponibles, reportes_no_disponibles:data.lista_reportes_no_disponibles })
+                    const apiKey = process.env.REACT_APP_API_KEY
+                    const result = await fetch('https://repomatic2.onrender.com/reportes_acumulados', {
+                        headers: {
+                            'Authorization': apiKey
+                        }
+                    });
+                    const data = await result.json();
+                    // Guardamos la data tal cual en el store
+                    setStore({ ...getStore(), reportes_acumulados: data });
                 } catch (e) {
-                    console.error(e)
+                    console.error("Error al obtener los reportes acumulados:", e);
                 }
             },
             uploadImageToCloudinary: async (imageFile) => {
@@ -233,42 +239,45 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return null;
                 }
             },
-            downloadReport: async(url, type) => {
-                const apiKey = process.env.REACT_APP_API_KEY
+            downloadReport: async (report_id) => {
+                const apiKey = process.env.REACT_APP_API_KEY;
                 try {
-                    let response = await fetch("https://repomatic2.onrender.com/obtener_reporte", {
-                        method: "POST",
+                    const response = await fetch(`https://repomatic2.onrender.com/descargar_reporte/${report_id}`, {
+                        method: "GET",
                         headers: {
-                            "Content-Type": "application/json",
                             "Authorization": apiKey
-                        },
-                        body: JSON.stringify({ "reporte_url": url, "file_type": type })
+                        }
                     });
-            
+                    
                     if (!response.ok) {
                         throw new Error(`Error al descargar el reporte: ${response.status} ${response.statusText}`);
                     }
-            
-                    let blob = await response.blob();
-            
-                    // Obtener la parte significativa de la URL y generar el nombre del archivo
-                    const formattedUrl = url.split('?')[1].slice(0, 15); // Tomamos los primeros 15 caracteres de la URL después del '?'
-                    let fileName = `${formattedUrl}.${type}`; // Nombre del archivo: parte de la URL + tipo de archivo
-            
-                    let downloadUrl = window.URL.createObjectURL(blob);
-            
-                    let a = document.createElement("a");
+                    
+                    const blob = await response.blob();
+                    
+                    // Intentamos extraer el nombre del archivo desde el header Content-Disposition
+                    let fileName = `reporte_${report_id}.csv`;
+                    const disposition = response.headers.get("Content-Disposition");
+                    if (disposition && disposition.indexOf("filename=") !== -1) {
+                        const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                        const matches = filenameRegex.exec(disposition);
+                        if (matches != null && matches[1]) {
+                            fileName = matches[1].replace(/['"]/g, '');
+                        }
+                    }
+                    
+                    const downloadUrl = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
                     a.href = downloadUrl;
-                    a.download = fileName; // Descargar el archivo con el nombre generado
+                    a.download = fileName;
                     document.body.appendChild(a);
                     a.click();
-            
                     window.URL.revokeObjectURL(downloadUrl);
                     document.body.removeChild(a);
                 } catch (e) {
                     console.error("Error al descargar el reporte:", e);
                 }
-            },
+            },                       
             uploadFile: async (formData) => {
                 try {
                     // Hacemos el fetch a la URL del backend
