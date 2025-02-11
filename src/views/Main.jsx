@@ -6,12 +6,12 @@ import './Main.css'
 
 const Main = () => {
 
-    const { actions } = useContext(Context)
+    const { actions, store } = useContext(Context)
     const token = localStorage.getItem('token')
 
     useEffect(() => {
         actions.getReportList()
-    }, [])
+    }, [store.deleteAndRefresh])
 
     return (
         <div className='mainTotal'>

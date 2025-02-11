@@ -9,9 +9,57 @@ const getState = ({ getStore, getActions, setStore }) => {
             reportes_acumulados: [],
             userName: "",
             user:{username:"", dni:"", admin:"", email:"", url_image:""},
-            trigger: false
+            trigger: false,
+            deleteAndRefresh: false
         },
         actions: {
+            deleteIndividualReport: async (id) => {
+                const apiKey = process.env.REACT_APP_API_KEY
+                try {
+                    let response = await fetch(`https://repomatic2.onrender.com/delete_individual_report/${id}`, {
+                        method:"DELETE",
+                        headers:{
+                            'Authorization':apiKey
+                        }
+                    })
+                    if(!response.ok){
+                        return false
+                    }else{
+                        return true
+                    }
+                    
+                } catch (error) {
+                    console.error(error)
+                    return false
+                }
+            },
+            
+            deleteReportGroup: async (url) => {
+                const apiKey = process.env.REACT_APP_API_KEY
+                try {
+                    let response = await fetch('https://repomatic2.onrender.com/delete_report_group', {
+                        method:"DELETE",
+                        body: JSON.stringify({'report_url':url}),
+                        headers:{
+                            'Content-Type': 'application/json',
+                            'Authorization': apiKey
+                        }
+                    })
+                    if(!response.ok){
+                        return false
+                    }else{
+                        return true
+                    }
+                    
+                } catch (error) {
+                    console.error(error)
+                    return false
+                }
+            },
+            callRefreshReportList: () => {
+                let store = getStore()
+                setStore({...store,deleteAndRefresh: !store.deleteAndRefresh})
+            },
             toggleAdmin: async (email, admin) => {
                 console.log("entro en toggleadmin")
                 let payload ={

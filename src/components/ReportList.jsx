@@ -4,7 +4,13 @@ import './ReportList.css';
 import gifLoading from "../img/loading_4.gif"; // O el gif que prefieras
 
 // Componente para cada tarjeta de reporte (acordeón)
-const ReportCard = ({ report, loadingDownloadIds, handlerDownloadVersion }) => {
+const ReportCard = ({
+  report,
+  loadingDownloadIds,
+  handlerDownloadVersion,
+  handlerDeleteGroup,
+  handlerDeleteIndividual,
+}) => {
   const [expanded, setExpanded] = useState(false);
 
   // Función para convertir "dd/mm/yyyy hh:mm:ss" a objeto Date
@@ -34,7 +40,17 @@ const ReportCard = ({ report, loadingDownloadIds, handlerDownloadVersion }) => {
   return (
     <div className="report-card">
       <div className="report-card-header">
-        <h5 className="report-title">{reportTitle}</h5>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <h5 className="report-title">{reportTitle}</h5>
+          <button
+            className="delete-group-button"
+            onClick={() => handlerDeleteGroup(report.report_url)}
+            style={{ background: "none", border: "none", cursor: "pointer" }}
+            title="Eliminar grupo de reportes"
+          >
+            <i className="fa fa-trash" style={{ color: "red" }}></i>
+          </button>
+        </div>
         <small className="report-url">{report.report_url.split('?')[1]}</small>
       </div>
       <div className="report-card-body">
@@ -42,17 +58,31 @@ const ReportCard = ({ report, loadingDownloadIds, handlerDownloadVersion }) => {
           {visibleVersions.map((version) => (
             <li key={version.id} className="version-item">
               <span className="version-date">{version.created_at}</span>
-              <button
-                className="download-button"
-                onClick={() => handlerDownloadVersion(version.id)}
-                disabled={loadingDownloadIds.includes(version.id)}
+              <div
+                className="version-actions"
+                style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
               >
-                {loadingDownloadIds.includes(version.id) ? (
-                  <i className="fa fa-spinner fa-spin"></i>
-                ) : (
-                  <i className="fa fa-download"></i>
-                )}
-              </button>
+                <button
+                  className="download-button"
+                  onClick={() => handlerDownloadVersion(version.id)}
+                  disabled={loadingDownloadIds.includes(version.id)}
+                  title="Descargar versión"
+                >
+                  {loadingDownloadIds.includes(version.id) ? (
+                    <i className="fa fa-spinner fa-spin"></i>
+                  ) : (
+                    <i className="fa fa-download"></i>
+                  )}
+                </button>
+                <button
+                  className="delete-individual-button"
+                  onClick={() => handlerDeleteIndividual(version.id)}
+                  style={{ background: "none", border: "none", cursor: "pointer" }}
+                  title="Eliminar versión"
+                >
+                  <i className="fa fa-trash" style={{ color: "red" }}></i>
+                </button>
+              </div>
             </li>
           ))}
         </ul>
@@ -96,6 +126,34 @@ const ReportList = () => {
     }
   };
 
+  const handlerDeleteGroup = async (reportUrl) => {
+    if (!window.confirm("¿Está seguro de eliminar este grupo de reportes?")) return;
+
+    try {
+      const result = await actions.deleteReportGroup(reportUrl);
+      if (result) {
+        actions.callRefreshReportList();
+      }
+    } catch (error) {
+      console.error("Error al eliminar el grupo de reportes:", error);
+    }
+  };
+
+  const handlerDeleteIndividual = async (versionId) => {
+    if (!window.confirm("¿Está seguro de eliminar esta versión?")) return;
+
+    try {
+      const result = await actions.deleteIndividualReport(versionId);
+      if (!result) {
+        alert("Algo salió mal");
+      } else {
+        actions.callRefreshReportList();
+      }
+    } catch (error) {
+      console.error("Error al eliminar la versión:", error);
+    }
+  };
+
   if (!store.reportes_acumulados) {
     return (
       <div className="loading-container">
@@ -123,6 +181,8 @@ const ReportList = () => {
             report={report}
             loadingDownloadIds={loadingDownloadIds}
             handlerDownloadVersion={handlerDownloadVersion}
+            handlerDeleteGroup={handlerDeleteGroup}
+            handlerDeleteIndividual={handlerDeleteIndividual}
           />
         ))
       )}
