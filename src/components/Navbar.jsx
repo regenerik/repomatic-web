@@ -36,13 +36,11 @@ const Navbar = () => {
                         <li className="nav-item">
                             <Link className={isActive('/')} to="/">Principal</Link>
                         </li>
-                        {
-                            token && (
+
                                 <li className="nav-item">
                                     <Link className={isActive('/chat')} to="/chat">Chat</Link>
                                 </li>
-                            )
-                        }
+
                         {
                             token && (
                                 <li className="nav-item">
