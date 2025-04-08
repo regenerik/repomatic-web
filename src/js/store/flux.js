@@ -8,49 +8,89 @@ const getState = ({ getStore, getActions, setStore }) => {
             reportes_no_disponibles: [],
             reportes_acumulados: [],
             userName: "",
-            user:{username:"", dni:"", admin:"", email:"", url_image:""},
+            user: { username: "", dni: "", admin: "", email: "", url_image: "" },
             trigger: false,
             deleteAndRefresh: false
         },
         actions: {
+            sendMessage: async (data) => {
+                try {
+                    const response = await fetch('https://repomatic2.onrender.com/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': '1803-1989-1803-1989'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Error en la respuesta de la red.');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error en sendMessage:', error);
+                    throw error;
+                }
+            },
+
+            closeChat: async () => {
+                try {
+                    const response = await fetch('https://repomatic2.onrender.com/close_chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': '1803-1989-1803-1989'
+                        },
+                        body: JSON.stringify({}) // Enviamos un body vacío
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Error cerrando el chat.');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error en closeChat:', error);
+                }
+            },
             deleteIndividualReport: async (id) => {
                 const apiKey = process.env.REACT_APP_API_KEY
                 try {
                     let response = await fetch(`https://repomatic2.onrender.com/delete_individual_report/${id}`, {
-                        method:"DELETE",
-                        headers:{
-                            'Authorization':apiKey
+                        method: "DELETE",
+                        headers: {
+                            'Authorization': apiKey
                         }
                     })
-                    if(!response.ok){
+                    if (!response.ok) {
                         return false
-                    }else{
+                    } else {
                         return true
                     }
-                    
+
                 } catch (error) {
                     console.error(error)
                     return false
                 }
             },
-            
+
             deleteReportGroup: async (url) => {
                 const apiKey = process.env.REACT_APP_API_KEY
                 try {
                     let response = await fetch('https://repomatic2.onrender.com/delete_report_group', {
-                        method:"DELETE",
-                        body: JSON.stringify({'report_url':url}),
-                        headers:{
+                        method: "DELETE",
+                        body: JSON.stringify({ 'report_url': url }),
+                        headers: {
                             'Content-Type': 'application/json',
                             'Authorization': apiKey
                         }
                     })
-                    if(!response.ok){
+                    if (!response.ok) {
                         return false
-                    }else{
+                    } else {
                         return true
                     }
-                    
+
                 } catch (error) {
                     console.error(error)
                     return false
@@ -58,17 +98,17 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             callRefreshReportList: () => {
                 let store = getStore()
-                setStore({...store,deleteAndRefresh: !store.deleteAndRefresh})
+                setStore({ ...store, deleteAndRefresh: !store.deleteAndRefresh })
             },
             toggleAdmin: async (email, admin) => {
                 console.log("entro en toggleadmin")
-                let payload ={
-                    email:email,
-                    admin:admin
+                let payload = {
+                    email: email,
+                    admin: admin
                 }
-                console.log("payload preparado: ",payload)
-                try{
-                    let response = await fetch("https://repomatic2.onrender.com/update_admin",{
+                console.log("payload preparado: ", payload)
+                try {
+                    let response = await fetch("https://repomatic2.onrender.com/update_admin", {
                         body: JSON.stringify(payload),
                         method: "PUT",
                         headers: {
@@ -77,16 +117,16 @@ const getState = ({ getStore, getActions, setStore }) => {
                     })
                     let data = await response.json()
                     console.log("data: ", data)
-                    if(data.message){
+                    if (data.message) {
                         console.log("Admin updated")
                         let currentTrigger = getStore().trigger
-                        setStore({...getStore(),trigger: !currentTrigger })
+                        setStore({ ...getStore(), trigger: !currentTrigger })
                         return data
-                    }else{
+                    } else {
                         console.log("algo salio mal actualizando el estado de admin")
                     }
 
-                }catch(e){
+                } catch (e) {
                     console.error(e)
                 }
             },
@@ -94,29 +134,29 @@ const getState = ({ getStore, getActions, setStore }) => {
                 console.log("getUsers ejecutándose...");
                 let token = localStorage.getItem('token');
 
-                
+
                 if (!token) {
                     console.error("El token es undefined. Asegurate de que esté guardado correctamente.");
                     return;
                 }
-            
+
                 let response = await fetch("https://repomatic2.onrender.com/users", {
                     headers: {
                         "Authorization": `Bearer ${token}`
                     }
                 });
-            
+
                 let data = await response.json();
                 if (data.lista_usuarios) {
                     setStore({ ...getStore(), users: data.lista_usuarios });
                 }
             },
             setUserForEdit: (user) => {
-                setStore({...getStore(), userForEdit: user });
+                setStore({ ...getStore(), userForEdit: user });
             },
             deleteUser: (userId) => {
                 const store = getStore();
-                setStore({...getStore(), users: store.users.filter((user) => user.id !== userId) });
+                setStore({ ...getStore(), users: store.users.filter((user) => user.id !== userId) });
             },
             updateReport: async (payload) => {
                 const apiKey = process.env.REACT_APP_API_KEY
@@ -167,24 +207,24 @@ const getState = ({ getStore, getActions, setStore }) => {
                             'Content-Type': 'application/json'
                         }
                     });
-            
+
                     const data = await response.json();
-            
+
                     if (!data.access_token) {
                         throw new Error("La pifiaste con las credenciales. ", " Aca la data:", data);
                     }
-            
-                    
+
+
                     // Guardar token en localStorage
                     localStorage.setItem('token', data.access_token);
-                    
+
                     // Guardar otros datos
                     localStorage.setItem('name', data.name);
                     localStorage.setItem('admin', JSON.stringify(data.admin));
                     localStorage.setItem('dni', data.dni);
                     localStorage.setItem('url_image', data.url_image);
                     localStorage.setItem('email', data.email);
-            
+
                     // Guardar en el estado global
                     setStore({
                         ...getStore(),
@@ -198,8 +238,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                             url_image: data.url_image
                         }
                     });
-            
-            
+
+
                 } catch (e) {
                     console.error(e);
                 }
@@ -260,7 +300,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             uploadImageToCloudinary: async (imageFile) => {
 
                 const preset_name = "j9z88xqz";
-                const cloud_name = "drlqmol4c"      
+                const cloud_name = "drlqmol4c"
 
                 const data = new FormData();
                 data.append('file', imageFile);
@@ -296,13 +336,13 @@ const getState = ({ getStore, getActions, setStore }) => {
                             "Authorization": apiKey
                         }
                     });
-                    
+
                     if (!response.ok) {
                         throw new Error(`Error al descargar el reporte: ${response.status} ${response.statusText}`);
                     }
-                    
+
                     const blob = await response.blob();
-                    
+
                     // Intentamos extraer el nombre del archivo desde el header Content-Disposition
                     let fileName = `reporte_${report_id}.csv`;
                     const disposition = response.headers.get("Content-Disposition");
@@ -313,7 +353,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                             fileName = matches[1].replace(/['"]/g, '');
                         }
                     }
-                    
+
                     const downloadUrl = window.URL.createObjectURL(blob);
                     const a = document.createElement("a");
                     a.href = downloadUrl;
@@ -325,7 +365,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (e) {
                     console.error("Error al descargar el reporte:", e);
                 }
-            },                       
+            },
             uploadFile: async (formData) => {
                 try {
                     // Hacemos el fetch a la URL del backend
@@ -333,16 +373,16 @@ const getState = ({ getStore, getActions, setStore }) => {
                         method: 'POST',
                         body: formData, // Asegurarse de que el archivo se esté enviando correctamente
                     });
-            
+
                     // Verificamos que la respuesta sea OK
                     if (!response.ok) {
                         throw new Error('Error en la subida del archivo');
                     }
-            
+
                     // Convertimos la respuesta a un Blob (porque es un archivo binario)
                     const blob = await response.blob();
                     console.log('Archivo subido con éxito y recibido como blob.');
-            
+
                     return blob; // Devolvemos el blob al componente para que lo use en la descarga
                 } catch (error) {
                     console.error('Error al subir el archivo:', error);
@@ -352,113 +392,113 @@ const getState = ({ getStore, getActions, setStore }) => {
             uploadExcel: async (formData) => {
                 const apiKey = process.env.REACT_APP_API_KEY
                 try {
-                  const response = await fetch('https://repomatic.onrender.com/subir_excel_total', {
-                    method: 'POST',
-                    body: formData,
-                    headers:{
-                        "Authorization":apiKey
-                    }
-                  });
-                  return response;
+                    const response = await fetch('https://repomatic.onrender.com/subir_excel_total', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            "Authorization": apiKey
+                        }
+                    });
+                    return response;
                 } catch (error) {
-                  console.error('Error al subir el archivo:', error);
-                  throw error;
+                    console.error('Error al subir el archivo:', error);
+                    throw error;
                 }
-              },
-        
-              // Action para descargar el Excel
-              downloadExcel: async () => {
-                
+            },
+
+            // Action para descargar el Excel
+            downloadExcel: async () => {
+
                 const apiKey = process.env.REACT_APP_API_KEY
                 try {
-                  const response = await fetch('http://localhost:5000/descargar_excel', {
-                    method: 'GET',
-                    headers:{
-                        "Authorization":apiKey,
+                    const response = await fetch('http://localhost:5000/descargar_excel', {
+                        method: 'GET',
+                        headers: {
+                            "Authorization": apiKey,
+                        }
+                    });
+                    console.log("Este es el response: ", response)
+                    if (!response.ok) {
+                        throw new Error('Error al descargar el archivo');
                     }
-                  });
-                  console.log("Este es el response: ", response)
-                  if (!response.ok) {
-                    throw new Error('Error al descargar el archivo');
-                  }
-                  
-                  const blob = await response.blob();  // Para crear la descarga del archivo
-                  return blob;
+
+                    const blob = await response.blob();  // Para crear la descarga del archivo
+                    return blob;
                 } catch (error) {
-                  console.error('Error al descargar el archivo:', error);
-                  throw error;
+                    console.error('Error al descargar el archivo:', error);
+                    throw error;
                 }
-              },
-        
-              // Action para eliminar el Excel
-              deleteExcel: async () => {
+            },
+
+            // Action para eliminar el Excel
+            deleteExcel: async () => {
                 const apiKey = process.env.REACT_APP_API_KEY
                 try {
-                  const response = await fetch('https://repomatic.onrender.com/eliminar_excel_total', {
-                    method: 'DELETE',
-                    headers:{
-                        "Authorization":apiKey
-                    }
-                  });
-                  console.log("este es el response de eliminar: ",response)
-                  return response;
+                    const response = await fetch('https://repomatic.onrender.com/eliminar_excel_total', {
+                        method: 'DELETE',
+                        headers: {
+                            "Authorization": apiKey
+                        }
+                    });
+                    console.log("este es el response de eliminar: ", response)
+                    return response;
                 } catch (error) {
-                  console.error('Error al eliminar el archivo:', error);
-                  throw error;
+                    console.error('Error al eliminar el archivo:', error);
+                    throw error;
                 }
-              },
-              existencia: async()=>{
+            },
+            existencia: async () => {
                 const apiKey = process.env.REACT_APP_API_KEY
-                try{
-                    const response = await fetch('https://repomatic.onrender.com/existencia_excel',{
-                        headers:{
-                            "Authorization":apiKey
+                try {
+                    const response = await fetch('https://repomatic.onrender.com/existencia_excel', {
+                        headers: {
+                            "Authorization": apiKey
                         }
                     })
                     const data = await response.json()
                     console.log("la data del action existencia es esta: ", data)
-                    if(data.ok){
+                    if (data.ok) {
                         return data.datetime
-                    }else{
+                    } else {
                         return false
                     }
 
 
 
-                }catch(e){
+                } catch (e) {
                     console.error(e)
                 }
-              },
-              getOneResume: async (apies) => {
+            },
+            getOneResume: async (apies) => {
                 const apiKey = process.env.REACT_APP_API_KEY
                 try {
 
-                  const response = await fetch('https://repomatic.onrender.com/get_one_resume', {
-                    method: 'POST',
-                    headers: {
-                      'Authorization':apiKey,
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ apies }), // Enviamos el número de APIES
-                  });
-                  if (response.ok) {
-                    const blob = await response.blob();
-                    const url = window.URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.setAttribute('download', `resumen_estacion_${apies}.xlsx`);
-                    document.body.appendChild(link);
-                    link.click();
-                    link.remove();
-                  } else {
-                    throw new Error('Error al descargar el archivo');
-                  }
+                    const response = await fetch('https://repomatic.onrender.com/get_one_resume', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': apiKey,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ apies }), // Enviamos el número de APIES
+                    });
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        const url = window.URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', `resumen_estacion_${apies}.xlsx`);
+                        document.body.appendChild(link);
+                        link.click();
+                        link.remove();
+                    } else {
+                        throw new Error('Error al descargar el archivo');
+                    }
                 } catch (error) {
-                  console.error('Error fetching resumen:', error);
-                  throw error;
+                    console.error('Error fetching resumen:', error);
+                    throw error;
                 }
-              }
-             
+            }
+
         }
     };
 };
