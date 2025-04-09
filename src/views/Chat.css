@@ -107,7 +107,10 @@
   .chat-send-button:hover {
     background-color: #0056b3;
   }
-  
+  .chat-message.bot {
+    white-space: pre-wrap;
+}
+
   /* Responsividad para dispositivos móviles */
   @media (max-width: 600px) {
     .chat-container {
