@@ -12,56 +12,98 @@ export default function FormsList() {
     })();
   }, [actions]);
 
-  const handleDownload = (id) => {
-    actions.downloadForm(id);
-  };
+  const handleDownload = (id) => actions.downloadForm(id);
+  const handleDownloadAll = () => actions.getAllForms();
 
-  const handleDownloadAll = () => {
-    actions.getAllForms();
+  // formatea 28/04/2025 → 28/04/25
+  const formatDate = (dateStr) => {
+    const d = new Date(dateStr);
+    return new Intl.DateTimeFormat('es-AR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit'
+    }).format(d);
   };
 
   return (
-    <div className="space-y-2">
-      {/* Botón para bajar todo */}
-      <div className="flex justify-end mb-2">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      {/* Botón “Descargar todos” */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <button
           onClick={handleDownloadAll}
-          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#16a34a',
+            color: '#000',
+            border: 'none',
+            borderRadius: 4,
+            cursor: 'pointer'
+          }}
         >
           Descargar todos
         </button>
       </div>
 
-      {/* Lista con altura fija y scroll */}
+      {/* Contenedor con scroll */}
       <div
-        className="bg-white rounded shadow p-4"
-        style={{ height: '25vh', overflowY: 'auto' }}
+        style={{
+          background: '#fff',
+          borderRadius: 8,
+          boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+          padding: 16,
+          height: '25vh',
+          overflowY: 'auto'
+        }}
       >
-        {forms.length === 0 && (
-          <p className="text-gray-500">No hay formularios aún.</p>
-        )}
-        {forms.map(form => (
-          <div
-            key={form.id}
-            className="flex justify-between items-center border-b last:border-0 py-2"
-          >
-            <div className="flex space-x-4 items-center">
-              {/* Solo fecha, sin hora */}
-              <p className="text-sm text-gray-600">
-                {new Date(form.creado_en).toLocaleDateString()}
-              </p>
-              <p className="font-medium">
-                {form.gestor} — {form.curso}
-              </p>
-            </div>
-            <button
-              onClick={() => handleDownload(form.id)}
-              className="text-blue-500 hover:text-blue-700 text-xl"
+        {forms.length === 0 ? (
+          <p style={{ color: '#6b7280', margin: 0 }}>No hay formularios aún.</p>
+        ) : (
+          forms.map(form => (
+            <div
+              key={form.id}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'min-content 1fr min-content',
+                columnGap: '1rem',
+                alignItems: 'center',
+                whiteSpace: 'nowrap',
+                borderBottom: '1px solid #e5e7eb',
+                padding: '8px 0'
+              }}
             >
-              <i className="fa fa-download" />
-            </button>
-          </div>
-        ))}
+              {/* Fecha */}
+              <span style={{ color: '#6b7280', flexShrink: 0 }}>
+                {formatDate(form.creado_en)}
+              </span>
+
+              {/* Gestor — Curso */}
+              <span
+                style={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {form.gestor} — {form.curso}
+              </span>
+
+              {/* Ícono descarga */}
+              <button
+                onClick={() => handleDownload(form.id)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '1.25rem',
+                  color: '#3b82f6',
+                  flexShrink: 0
+                }}
+              >
+                <i className="fa fa-download" />
+              </button>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
