@@ -25,7 +25,7 @@ const Chat = () => {
     // Cuando el componente se desmonte, se cierra el thread
     useEffect(() => {
         return () => {
-            if (actions.closeChat) actions.closeChat();
+            if (actions.closeChat) actions.closeChat(threadId);
         };
     }, [actions]);
 

@@ -50,7 +50,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             },
 
-            closeChat: async () => {
+            closeChat: async (threadId) => {
                 try {
                     const response = await fetch('https://repomatic2.onrender.com/close_chat', {
                         method: 'POST',
@@ -58,7 +58,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                             'Content-Type': 'application/json',
                             'Authorization': '1803-1989-1803-1989'
                         },
-                        body: JSON.stringify({}) // Enviamos un body vacío
+                        body: JSON.stringify({ thread_id: threadId })
                     });
 
                     if (!response.ok) {
