@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Context } from '../js/store/appContext';
 import './ReportList.css';
 import gifLoading from "../img/loading_4.gif"; // O el gif que prefieras
+import FormsList from './FormList.jsx';
 
 // Componente para cada tarjeta de reporte (acordeón)
 const ReportCard = ({
@@ -168,10 +169,13 @@ const ReportList = () => {
 
   return (
     <div className="report-list-container">
+      
+      <h3 className="report-list-title">Reportes de cursos por Gestor</h3>
+      <FormsList/>
+      <h3 className="report-list-title mt-4">Reportes Generales</h3>
       <button className="refresh-button" onClick={actions.getReportList}>
         Cargar/Actualizar
       </button>
-      <h3 className="report-list-title">Reportes Acumulados</h3>
       {store.reportes_acumulados.length === 0 ? (
         <p>No hay reportes disponibles.</p>
       ) : (

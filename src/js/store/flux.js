@@ -13,6 +13,50 @@ const getState = ({ getStore, getActions, setStore }) => {
             deleteAndRefresh: false
         },
         actions: {
+            getForms: async () => {
+                try {
+                    const response = await fetch(
+                        'https://repomatic.onrender.com/get_forms',
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': '1803-1989-1803-1989'
+                            }
+                        }
+                    );
+                    if (!response.ok) throw new Error('Error fetching forms');
+                    return await response.json();  // -> array de FormularioGestor
+                } catch (e) {
+                    console.error('getForms error:', e);
+                }
+            },
+
+            downloadForm: async (id) => {
+                try {
+                    const response = await fetch(
+                        `https://repomatic.onrender.com/get_form_pdf/${id}`,
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': '1803-1989-1803-1989'
+                            }
+                        }
+                    );
+                    if (!response.ok) throw new Error('Error downloading PDF');
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `informe_${id}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    URL.revokeObjectURL(url);
+                } catch (e) {
+                    console.error('downloadForm error:', e);
+                }
+            },
             sendForm: async (formData) => {
                 try {
                     const response = await fetch('https://repomatic.onrender.com/form_gestores', {
