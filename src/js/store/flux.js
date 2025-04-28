@@ -15,7 +15,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         actions: {
             sendForm: async (formData) => {
                 try {
-                    const response = await fetch('https://repomatic2.onrender.com/form_gestores', {
+                    const response = await fetch('https://repomatic.onrender.com/form_gestores', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
