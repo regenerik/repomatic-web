@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../js/store/appContext.js';
+import logo from '../img/logo.png'
 
 export default function CourseForm() {
   const { actions } = useContext(Context)
@@ -105,9 +106,17 @@ export default function CourseForm() {
   useEffect(() => {
     if (!formData.curso) return;
     const { objetivo, contenido } = objetivosContenido[formData.curso];
-    const recs = Object.entries(recomendacionesMapping)
-      .filter(([key]) => key !== formData.curso)
-      .reduce((acc, [key, items]) => ({ ...acc, [key]: items }), {});
+
+
+  const recs = Object.fromEntries(
+    Object.entries(recomendacionesMapping).filter(
+      ([key]) =>
+        key !== formData.curso &&                               // sale el mismo curso
+        !(formData.curso === 'PEC 2.0' && key === 'PEC 1.0')    // sale PEC 1.0 si estamos en 2.0
+    )
+  );
+
+
     setFormData(prev => ({
       ...prev,
       objetivo,
@@ -148,17 +157,28 @@ export default function CourseForm() {
     }
     console.log('Enviando datos:', formData);
     let result = await actions.sendForm(formData)
-    if(result){
-        alert('Formulario enviado con éxito');
-        setFormData(initialFormData);
-    }else{
-        alert('Error al enviar el formulario');
+    if (result) {
+      alert('Formulario enviado con éxito');
+      setFormData(initialFormData);
+    } else {
+      alert('Error al enviar el formulario');
     }
 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-6 bg-white shadow rounded">
+    <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-6 bg-white bg-opacity-50 shadow rounded mt-4 mb-4">
+      <div className="d-flex flex-column align-items-center">
+        <img
+          src={logo}
+          alt="el logo"
+          className="img-fluid w-20 mb-3"
+        />
+        <h1 className="font-size fw-bold">
+          Formulario para Gestores YPF
+        </h1>
+        <br/>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* APIES */}
         <div>
@@ -220,7 +240,7 @@ export default function CourseForm() {
         <div>
           <label className="block font-semibold mb-1">Duración en Horas</label>
           <input
-            type="text"
+            type="number"
             name="duracionHoras"
             value={formData.duracionHoras}
             onChange={handleChange}
@@ -348,7 +368,7 @@ export default function CourseForm() {
         />
       </div>
       <div className="mt-4">
-        <label className="block font-semibold mb-1">Firma (Como se veria en el pdf resultante.)</label>
+        <label className="block font-semibold mb-1">Firma (Se verá como firma en el pdf resultante.)</label>
         {/* <input
           type="file"
           name="firmaFile"
