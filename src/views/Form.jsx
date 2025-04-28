@@ -77,7 +77,7 @@ export default function CourseForm() {
     ]
   };
 
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     apies: '',
     curso: '',
     fecha: '',
@@ -98,7 +98,8 @@ export default function CourseForm() {
     firmaFile: null,
     nombreFirma: '',
     emailGestor: ''
-  });
+  };
+  const [formData, setFormData] = useState(initialFormData);
 
   // Actualizar objetivo, contenido y recomendaciones
   useEffect(() => {
@@ -149,6 +150,7 @@ export default function CourseForm() {
     let result = await actions.sendForm(formData)
     if(result){
         alert('Formulario enviado con éxito');
+        setFormData(initialFormData);
     }else{
         alert('Error al enviar el formulario');
     }
@@ -346,18 +348,18 @@ export default function CourseForm() {
         />
       </div>
       <div className="mt-4">
-        <label className="block font-semibold mb-1">Firma (opcional)</label>
-        <input
+        <label className="block font-semibold mb-1">Firma (Como se veria en el pdf resultante.)</label>
+        {/* <input
           type="file"
           name="firmaFile"
           accept="image/*"
           onChange={handleChange}
           className="block mb-2"
-        />
+        /> */}
         <input
           type="text"
           name="nombreFirma"
-          placeholder="Escribe tu nombre en cursiva"
+          placeholder="Escribe tu nombre"
           value={formData.nombreFirma}
           onChange={handleChange}
           className="w-full border p-2 rounded italic"
