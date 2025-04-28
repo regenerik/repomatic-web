@@ -13,6 +13,22 @@ const getState = ({ getStore, getActions, setStore }) => {
             deleteAndRefresh: false
         },
         actions: {
+            sendForm: async (formData) => {
+                try {
+                    const response = await fetch('https://repomatic2.onrender.com/form_gestores', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': '1803-1989-1803-1989'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                    return response.ok;
+                } catch (error) {
+                    console.error('Error enviando formulario:', error);
+                    return false;
+                }
+            },
             sendMessage: async (data) => {
                 try {
                     const response = await fetch('https://repomatic2.onrender.com/chat', {

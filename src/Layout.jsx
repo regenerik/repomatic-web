@@ -11,6 +11,7 @@ import Admin from './views/Admin.jsx';
 import Profile from './views/Profile.jsx'
 import Experiencia from './views/Experiencia.jsx';
 import Chat from './views/Chat.jsx';
+import Form from './views/Form.jsx'
 
 const Layout = () => {
 
@@ -22,6 +23,7 @@ const Layout = () => {
             <Routes>
                 <Route exact path="/chat" element={<Chat/>}/>
                 <Route exact path="/" element={<Home/>}/>
+                <Route exact path="/form" element={<Form/>}/>
                 <Route exact path="/home" element={<Home/>}/>
                 <Route exact path="/contact" element={<Contact/>}/>
                 <Route exact path="/main" element={<Main/>}/>
