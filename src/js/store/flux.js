@@ -13,6 +13,32 @@ const getState = ({ getStore, getActions, setStore }) => {
             deleteAndRefresh: false
         },
         actions: {
+            getAllForms: async () => {
+                try {
+                    const res = await fetch(
+                        'https://repomatic.onrender.com/form_gestores/download_excel',
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': '1803-1989-1803-1989'
+                            }
+                        }
+                    );
+                    if (!res.ok) throw new Error('Error downloading Excel');
+                    const blob = await res.blob();
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    // El backend ya manda el nombre dinámico: usemos uno genérico
+                    a.download = `Formularios_Gestores.xlsx`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    URL.revokeObjectURL(url);
+                } catch (e) {
+                    console.error('getAllForms error:', e);
+                }
+            },
             getForms: async () => {
                 try {
                     const response = await fetch(
