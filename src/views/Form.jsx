@@ -46,7 +46,7 @@ export default function CourseForm() {
   // };
 
   const gestoresEmail = {
-    'Jose L. Gallucci': 'nahuel.paz@ypf.com',
+    'Jose L. Gallucci': 'nahuel.paz.cx@gmail.com',
     'Mauricio Cuevas': 'nahuel.paz.cx@gmail.com',
     'John Martinez': 'nahuel.paz.cx@gmail.com',
     'Georgina M. Cutili': 'nahuel.paz.cx@gmail.com',
