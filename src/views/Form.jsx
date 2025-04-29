@@ -108,13 +108,13 @@ export default function CourseForm() {
     const { objetivo, contenido } = objetivosContenido[formData.curso];
 
 
-  const recs = Object.fromEntries(
-    Object.entries(recomendacionesMapping).filter(
-      ([key]) =>
-        key !== formData.curso &&                               // sale el mismo curso
-        !(formData.curso === 'PEC 2.0' && key === 'PEC 1.0')    // sale PEC 1.0 si estamos en 2.0
-    )
-  );
+    const recs = Object.fromEntries(
+      Object.entries(recomendacionesMapping).filter(
+        ([key]) =>
+          key !== formData.curso &&                               // sale el mismo curso
+          !(formData.curso === 'PEC 2.0' && key === 'PEC 1.0')    // sale PEC 1.0 si estamos en 2.0
+      )
+    );
 
 
     setFormData(prev => ({
@@ -177,7 +177,7 @@ export default function CourseForm() {
         <h1 className="font-size fw-bold">
           Formulario para Gestores YPF
         </h1>
-        <br/>
+        <br />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* APIES */}
@@ -341,6 +341,19 @@ export default function CourseForm() {
         ))}
       </div>
 
+      {/* Otros aspectos y firma */}
+      <div className="mt-4">
+        <label className="block font-semibold mb-1">Otros aspectos a destacar</label>
+        <textarea
+          name="otrosAspectos"
+          value={formData.otrosAspectos}
+          onChange={handleChange}
+          rows="3"
+          className="w-full border p-2 rounded"
+          placeholder='Completar de ser necesario con los detalles de las observaciones marcadas en el punto anterior.'
+        />
+      </div>
+
       {/* Recomendaciones */}
       <div className="mt-4">
         <p className="font-semibold mb-1">Recomendaciones</p>
@@ -356,17 +369,7 @@ export default function CourseForm() {
         ))}
       </div>
 
-      {/* Otros aspectos y firma */}
-      <div className="mt-4">
-        <label className="block font-semibold mb-1">Otros aspectos a destacar</label>
-        <textarea
-          name="otrosAspectos"
-          value={formData.otrosAspectos}
-          onChange={handleChange}
-          rows="3"
-          className="w-full border p-2 rounded"
-        />
-      </div>
+
       <div className="mt-4">
         <label className="block font-semibold mb-1">Firma (Se verá como firma en el pdf resultante.)</label>
         {/* <input
