@@ -101,6 +101,8 @@ export default function CourseForm() {
     emailGestor: ''
   };
   const [formData, setFormData] = useState(initialFormData);
+  // NUEVO: opciones de checkbox según el curso
+  const [recommendationsOptions, setRecommendationsOptions] = useState({});
 
   // Actualizar objetivo, contenido y recomendaciones
   useEffect(() => {
@@ -121,8 +123,9 @@ export default function CourseForm() {
       ...prev,
       objetivo,
       contenidoDesarrollado: contenido,
-      recomendaciones: recs
+      recomendaciones: {}    // limpiamos selecciones previas
     }));
+    setRecommendationsOptions(recs);
   }, [formData.curso]);
 
   // Actualizar emailGestor
@@ -138,6 +141,18 @@ export default function CourseForm() {
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
+  };
+
+  const handleRecommendationChange = curso => {
+    setFormData(prev => {
+      const recs = { ...prev.recomendaciones };
+      if (recs[curso]) {
+        delete recs[curso];            // si ya estaba, lo saco
+      } else {
+        recs[curso] = recomendacionesMapping[curso]; // si no, lo agrego con el array original
+      }
+      return { ...prev, recomendaciones: recs };
+    });
   };
 
   const validateForm = () => {
@@ -165,6 +180,7 @@ export default function CourseForm() {
     }
 
   };
+
 
   return (
     <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-6 bg-white bg-opacity-50 shadow rounded mt-4 mb-4">
@@ -356,16 +372,22 @@ export default function CourseForm() {
 
       {/* Recomendaciones */}
       <div className="mt-4">
-        <p className="font-semibold mb-1">Recomendaciones</p>
-        {Object.entries(formData.recomendaciones).map(([curso, items]) => (
-          <div key={curso} className="mb-2">
-            <p className="underline font-semibold">{curso}</p>
-            <ul className="list-disc list-inside">
-              {items.map((item, idx) => (
-                <li key={idx}>{item}</li>
-              ))}
-            </ul>
-          </div>
+        <p className="font-semibold mb-2">Recomendaciones (marcá los cursos)</p>
+        {Object.keys(recommendationsOptions).length === 0 && (
+          <p className="text-sm text-gray-600">
+            Seleccioná un curso arriba para ver recomendaciones.
+          </p>
+        )}
+        {Object.keys(recommendationsOptions).map(curso => (
+          <label key={curso} className="inline-flex items-center mr-6 mb-1">
+            <input
+              type="checkbox"
+              checked={!!formData.recomendaciones[curso]}
+              onChange={() => handleRecommendationChange(curso)}
+              className="mr-1"
+            />
+            {curso}
+          </label>
         ))}
       </div>
 
