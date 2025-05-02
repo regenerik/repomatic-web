@@ -12,6 +12,7 @@ import Profile from './views/Profile.jsx'
 import Experiencia from './views/Experiencia.jsx';
 import Chat from './views/Chat.jsx';
 import Form from './views/Form.jsx'
+import FormsList from './components/FormList.jsx';
 
 const Layout = () => {
 
@@ -24,6 +25,7 @@ const Layout = () => {
                 <Route exact path="/chat" element={<Chat/>}/>
                 <Route exact path="/" element={<Home/>}/>
                 <Route exact path="/form" element={<Form/>}/>
+                <Route exact path="/form-list" element={<FormsList/>}/>
                 <Route exact path="/home" element={<Home/>}/>
                 <Route exact path="/contact" element={<Contact/>}/>
                 <Route exact path="/main" element={<Main/>}/>

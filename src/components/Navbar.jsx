@@ -41,6 +41,10 @@ const Navbar = () => {
                                     <Link className={isActive('/chat')} to="/chat">Chat</Link>
                                 </li>
 
+                                <li className="nav-item">
+                                    <Link className={isActive('/chat')} to="/form-list">Form</Link>
+                                </li>
+
                         {
                             token && (
                                 <li className="nav-item">
