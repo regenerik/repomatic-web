@@ -43,7 +43,7 @@ export default function CourseForm() {
     'Fernanda M. Rodriguez': 'nahuel.paz.cx@gmail.com',
     'Pablo J. Raggio': 'nahuel.paz.cx@gmail.com',
     'Noelia Otarula': 'nahuel.paz.cx@gmail.com',
-    'Dante Merluccio': 'nahuel.paz.cx@gmail.com'
+    'Dante Merluccio': 'regenerik@gmail.com'
   };
 
   const recomendacionesMapping = {
