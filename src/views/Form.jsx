@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../js/store/appContext.js';
-import logo from '../img/logo.png'
+import logo from '../img/logo.png';
 
 export default function CourseForm() {
-  const { actions } = useContext(Context)
+  const { actions } = useContext(Context);
+
   // Inyectar Tailwind vía CDN
   useEffect(() => {
     const link = document.createElement('link');
@@ -33,18 +34,6 @@ export default function CourseForm() {
     }
   };
 
-  // const gestoresEmail = {
-  //   'Jose L. Gallucci': 'jose.l.gallucci@ypf.com',
-  //   'Mauricio Cuevas': 'mauricio.cuevas@ypf.com',
-  //   'John Martinez': 'john.martinez@ypf.com',
-  //   'Georgina M. Cutili': 'georgina.m.cutili@ypf.com',
-  //   'Octavio Torres': 'octavio.torres@ypf.com',
-  //   'Fernanda M. Rodriguez': 'fernanda.m.rodriguez@ypf.com',
-  //   'Pablo J. Raggio': 'pablo.j.raggio@ypf.com',
-  //   'Noelia Otarula': 'noelia.otarula@ypf.com',
-  //   'Dante Merluccio': 'dante.merluccio@ypf.com'
-  // };
-
   const gestoresEmail = {
     'Jose L. Gallucci': 'nahuel.paz.cx@gmail.com',
     'Mauricio Cuevas': 'nahuel.paz.cx@gmail.com',
@@ -54,7 +43,7 @@ export default function CourseForm() {
     'Fernanda M. Rodriguez': 'nahuel.paz.cx@gmail.com',
     'Pablo J. Raggio': 'nahuel.paz.cx@gmail.com',
     'Noelia Otarula': 'nahuel.paz.cx@gmail.com',
-    'Dante Merluccio': 'nahuel.paz.cx@gmail.com'
+    'Dante Merluccio': 'regenerik@gmail.com'
   };
 
   const recomendacionesMapping = {
@@ -84,8 +73,6 @@ export default function CourseForm() {
     fecha: '',
     gestor: '',
     duracionHoras: '',
-    objetivo: '',
-    contenidoDesarrollado: '',
     ausentes: '',
     presentes: '',
     resultadosLogros: '',
@@ -98,32 +85,34 @@ export default function CourseForm() {
     otrosAspectos: '',
     firmaFile: null,
     nombreFirma: '',
-    emailGestor: ''
+    emailGestor: '',
+    jornada: '',
+    dotacion_real_estacion: '',
+    dotacion_dni_faltantes: ''
   };
-  const [formData, setFormData] = useState(initialFormData);
-  // NUEVO: opciones de checkbox según el curso
-  const [recommendationsOptions, setRecommendationsOptions] = useState({});
 
-  // Actualizar objetivo, contenido y recomendaciones
+  const [formData, setFormData] = useState(initialFormData);
+  const [recommendationsOptions, setRecommendationsOptions] = useState({});
+  const [dniInputs, setDniInputs] = useState(['']);
+
+  // Actualizar objetivo, contenido y recomendaciones cuando cambia el curso
   useEffect(() => {
     if (!formData.curso) return;
     const { objetivo, contenido } = objetivosContenido[formData.curso];
 
-
     const recs = Object.fromEntries(
       Object.entries(recomendacionesMapping).filter(
         ([key]) =>
-          key !== formData.curso &&                               // sale el mismo curso
-          !(formData.curso === 'PEC 2.0' && key === 'PEC 1.0')    // sale PEC 1.0 si estamos en 2.0
+          key !== formData.curso &&
+          !(formData.curso === 'PEC 2.0' && key === 'PEC 1.0')
       )
     );
-
 
     setFormData(prev => ({
       ...prev,
       objetivo,
       contenidoDesarrollado: contenido,
-      recomendaciones: {}    // limpiamos selecciones previas
+      recomendaciones: {}
     }));
     setRecommendationsOptions(recs);
   }, [formData.curso]);
@@ -133,6 +122,15 @@ export default function CourseForm() {
     if (!formData.gestor) return;
     setFormData(prev => ({ ...prev, emailGestor: gestoresEmail[formData.gestor] }));
   }, [formData.gestor]);
+
+  // Sincronizar DNI faltantes concatenados
+  useEffect(() => {
+    const validDnis = dniInputs.filter(dni => dni && dni.trim() !== '');
+    setFormData(prev => ({
+      ...prev,
+      dotacion_dni_faltantes: validDnis.join(';')
+    }));
+  }, [dniInputs]);
 
   const handleChange = e => {
     const { name, value, type, files } = e.target;
@@ -147,11 +145,23 @@ export default function CourseForm() {
     setFormData(prev => {
       const recs = { ...prev.recomendaciones };
       if (recs[curso]) {
-        delete recs[curso];            // si ya estaba, lo saco
+        delete recs[curso];
       } else {
-        recs[curso] = recomendacionesMapping[curso]; // si no, lo agrego con el array original
+        recs[curso] = recomendacionesMapping[curso];
       }
       return { ...prev, recomendaciones: recs };
+    });
+  };
+
+  const handleAddDni = () => {
+    setDniInputs(prev => [...prev, '']);
+  };
+
+  const handleDniChange = (index, value) => {
+    setDniInputs(prev => {
+      const newList = [...prev];
+      newList[index] = value;
+      return newList;
     });
   };
 
@@ -171,30 +181,26 @@ export default function CourseForm() {
       return;
     }
     console.log('Enviando datos:', formData);
-    let result = await actions.sendForm(formData)
+    let result = await actions.sendForm(formData);
     if (result) {
       alert('Formulario enviado con éxito');
       setFormData(initialFormData);
+      setDniInputs(['']);
     } else {
       alert('Error al enviar el formulario');
     }
-
   };
-
 
   return (
     <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-6 bg-white bg-opacity-50 shadow rounded mt-4 mb-4">
-      <div className="d-flex flex-column align-items-center">
-        <img
-          src={logo}
-          alt="el logo"
-          className="img-fluid w-20 mb-3"
-        />
-        <h1 className="font-size fw-bold">
-          Formulario para Gestores YPF
-        </h1>
-        <br />
+      {/* --- HEADER --- */}
+      <div className="flex flex-col items-center">
+        <img src={logo} alt="el logo" className="w-20 mb-3" />
+        <h1 className="text-2xl font-bold">Formulario para Gestores YPF</h1>
       </div>
+      <br />
+
+      {/* --- GRID PRINCIPAL --- */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* APIES */}
         <div>
@@ -290,6 +296,62 @@ export default function CourseForm() {
             required
           />
         </div>
+        {/* Nueva Jornada */}
+        <div>
+          <label className="block font-semibold mb-1">Jornada</label>
+          <select
+            name="jornada"
+            value={formData.jornada}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+            required
+          >
+            <option value="">-- Selecciona jornada --</option>
+            <option value="Mañana">Mañana</option>
+            <option value="Tarde">Tarde</option>
+            <option value="Completa">Completa</option>
+          </select>
+        </div>
+        {/* Nueva Dotación Real */}
+        <div>
+          <label className="block font-semibold mb-1">Dotación real de estación</label>
+          <input
+            type="number"
+            name="dotacion_real_estacion"
+            value={formData.dotacion_real_estacion}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+          />
+        </div>
+      </div>
+
+      {/* DNI faltantes dinámicos */}
+      <div className="mt-4">
+        <label className="block font-semibold mb-1">
+          En caso de que la dotación real vs campus no esté correcta, los DNI a agregar son:
+        </label>
+        <div>
+          {dniInputs.map((dni, index) => (
+            <div key={index} className="flex items-center mb-2">
+              <input
+                type="number"
+                value={dni}
+                onChange={e => handleDniChange(index, e.target.value)}
+                className="w-full border p-2 rounded"
+                placeholder="Ingrese DNI"
+              />
+              {index === dniInputs.length - 1 && (
+                <button
+                  type="button"
+                  onClick={handleAddDni}
+                  className="ml-2 px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                  +
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Objetivos y Contenido */}
@@ -310,7 +372,7 @@ export default function CourseForm() {
           value={formData.contenidoDesarrollado}
           readOnly
           rows="4"
-          className="w-full border p-2 rounded bg-gray-100"
+          className="w-full border p-2 rounded bg-gray-100 whitespace-pre-line"
         />
       </div>
 
@@ -373,34 +435,33 @@ export default function CourseForm() {
       {/* Recomendaciones */}
       <div className="mt-4">
         <p className="font-semibold mb-2">Recomendaciones (marcá los cursos)</p>
-        {Object.keys(recommendationsOptions).length === 0 && (
+        {Object.keys(recommendationsOptions).length === 0 ? (
           <p className="text-sm text-gray-600">
             Seleccioná un curso arriba para ver recomendaciones.
           </p>
+        ) : (
+          Object.keys(recommendationsOptions).map(curso => (
+            <div key={curso} className="mb-4 border-l-4 border-blue-300 pl-4">
+              <label className="inline-flex items-center mr-6 mb-1">
+                <input
+                  type="checkbox"
+                  checked={!!formData.recomendaciones[curso]}
+                  onChange={() => handleRecommendationChange(curso)}
+                  className="mr-1"
+                />
+                <span className="font-semibold">{curso}</span>
+              </label>
+              <p className="ml-8 text-sm text-gray-700 whitespace-pre-line">
+                {objetivosContenido[curso]?.contenido}
+              </p>
+            </div>
+          ))
         )}
-        {Object.keys(recommendationsOptions).map(curso => (
-          <label key={curso} className="inline-flex items-center mr-6 mb-1">
-            <input
-              type="checkbox"
-              checked={!!formData.recomendaciones[curso]}
-              onChange={() => handleRecommendationChange(curso)}
-              className="mr-1"
-            />
-            {curso}
-          </label>
-        ))}
       </div>
 
-
+      {/* Firma (texto) */}
       <div className="mt-4">
         <label className="block font-semibold mb-1">Firma (Se verá como firma en el pdf resultante.)</label>
-        {/* <input
-          type="file"
-          name="firmaFile"
-          accept="image/*"
-          onChange={handleChange}
-          className="block mb-2"
-        /> */}
         <input
           type="text"
           name="nombreFirma"

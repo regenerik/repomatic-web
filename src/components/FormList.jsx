@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../js/store/appContext.js';
 import Navbar from './Navbar.jsx';
+import { useNavigate } from 'react-router';
 
 export default function FormsList() {
   const { actions } = useContext(Context);
   const [forms, setForms] = useState([]);
+  const navigate = useNavigate()
 
   useEffect(() => {
     (async () => {
@@ -26,13 +28,31 @@ export default function FormsList() {
     }).format(d);
   };
 
+  const handleGoToFormList = () => {
+    navigate('/form')
+  }
+
   return (
     <div>
       <Navbar />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 ,alignItems: 'center',marginTop: 14}}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center', marginTop: 14 }}>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '12px', justifyContent: 'flex-end' }}>
+          {/* Botón “Llenar formulario” */}
+          <button
+            onClick={handleGoToFormList}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#16a34a',
+              color: '#000',
+              border: 'none',
+              borderRadius: 4,
+              cursor: 'pointer'
+            }}
+          >
+            Llenar Formulario
+          </button>
 
-        {/* Botón “Descargar todos” */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          {/* Botón “Descargar todos” */}
           <button
             onClick={handleDownloadAll}
             style={{
