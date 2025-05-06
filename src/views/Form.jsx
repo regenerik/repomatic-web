@@ -4,6 +4,7 @@ import logo from '../img/logo.png';
 
 export default function CourseForm() {
   const { actions } = useContext(Context);
+  const [ loading , setLoading ] = useState(false)
 
   // Inyectar Tailwind vía CDN
   useEffect(() => {
@@ -51,7 +52,7 @@ export default function CourseForm() {
     'Fernanda M. Rodriguez': 'nahuel.paz.cx@gmail.com',
     'Pablo J. Raggio': 'nahuel.paz.cx@gmail.com',
     'Noelia Otarula': 'nahuel.paz.cx@gmail.com',
-    'Dante Merluccio': 'regenerik@gmail.com'
+    'Dante Merluccio': 'nahuel.paz.cx@gmail.com'
   };
 
   const recomendacionesMapping = {
@@ -193,7 +194,9 @@ export default function CourseForm() {
       return;
     }
     console.log('Enviando datos:', formData);
+    setLoading(true)
     let result = await actions.sendForm(formData);
+    setLoading(false)
     if (result) {
       alert('Formulario enviado con éxito');
       setFormData(initialFormData);
@@ -507,7 +510,14 @@ export default function CourseForm() {
       type="submit"
       className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
     >
-      Enviar formulario
+      {
+        loading ? (
+          "Enviando..."
+        ):(
+          "Enviar formulario"
+        )
+      }
+
     </button>
   </div>
     </form >
