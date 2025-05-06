@@ -31,6 +31,14 @@ export default function CourseForm() {
     'PEC 2.0': {
       objetivo: 'Transformar tu dotación y consolidar un equipo que sea referente en servicio al cliente. Este programa les brinda a tus vendedores las técnicas y estrategias para aplicar el modelo de conexión emocional, haciendo que cada miembro de tu equipo sea un embajador de la experiencia del cliente, capaz de influir y cautivar a cada visitante.',
       contenido: '• Técnicas avanzadas para generar conexión emocional con el cliente.\n• Herramientas prácticas para crear experiencias únicas en cada interacción.\n• Ejecución y monitoreo de un ciclo de servicio que fideliza.\n• Estrategias para potenciar la motivación y el compromiso del equipo.\n• Casos de éxito en la aplicación de modelos de relacionamiento efectivo.'
+    },
+    'PEM Full': {
+      objetivo: 'Proveer al ingresarte, de las herramientas básicas y fundamentales para que pueda desempeñarse en una Estación de servicios como vendedor de Tienda.',
+      contenido: 'Instancia presencial del módulo técnico/comercial destinado a aspirantes a trabajar en los sectores de Tienda FULL de una Estación de Servicios. Organizado en tres ejes temáticos (Modelo de Negocio; Gestion del Full; Operación Full) Los contenidos incluidos son: Concepto FULL. Sectores de tienda. Tareas en cada sector. El rol del vendedor.'
+    },
+    'PEM Retail': {
+      objetivo: 'Proveer al ingresante, de las herramientas básicas y fundamentales para que pueda desempeñarse en una Estación de servicios como vendedor de Playa.',
+      contenido: 'Propósito YPF. Cadena de valor.  La Red de Retail, La Estación de servicio. Sectores y aspectos clave, Pilares de la Red. Rol del vendedor, Perfil del Vendedor, Funciones. Composición del Lubricante, lectura de un envase, viscosidad., los acuerdos, diferencias entre productos y los tips, compactibilidad con el catalizado, identificar a  los vehículos por su Tecnología,​importancia del nivel de aceite del motor​ Seguridad en Playa, comunicación efectiva con el Cliente. Combustible nafta, las normas euro y su evolución, Combustible diesel, Calidad y trazabilidad de los combustibles​, Venta y mix de combustibles.  CDS Playa. Brindar al ingresante sin experiencia los conocimientos básicos necesarios para desempeñarse en una Estación de la Red YPF bajo los estándares de seguridad que exige la Compañía.'
     }
   };
 
@@ -43,7 +51,7 @@ export default function CourseForm() {
     'Fernanda M. Rodriguez': 'nahuel.paz.cx@gmail.com',
     'Pablo J. Raggio': 'nahuel.paz.cx@gmail.com',
     'Noelia Otarula': 'nahuel.paz.cx@gmail.com',
-    'Dante Merluccio': 'nahuel.paz.cx@gmail.com'
+    'Dante Merluccio': 'regenerik@gmail.com'
   };
 
   const recomendacionesMapping = {
@@ -88,22 +96,26 @@ export default function CourseForm() {
     emailGestor: '',
     jornada: '',
     dotacion_real_estacion: '',
-    dotacion_dni_faltantes: ''
+    dotacion_en_campus:''
+    // dotacion_dni_faltantes: ''
   };
 
   const [formData, setFormData] = useState(initialFormData);
   const [recommendationsOptions, setRecommendationsOptions] = useState({});
-  const [dniInputs, setDniInputs] = useState(['']);
+  // const [dniInputs, setDniInputs] = useState(['']);
 
   // Actualizar objetivo, contenido y recomendaciones cuando cambia el curso
   useEffect(() => {
     if (!formData.curso) return;
     const { objetivo, contenido } = objetivosContenido[formData.curso];
 
+    // Excluir nuevos cursos de las recomendaciones
+    const excludedRecommendations = ['PEM Full', 'PEM Retail'];
     const recs = Object.fromEntries(
       Object.entries(recomendacionesMapping).filter(
         ([key]) =>
           key !== formData.curso &&
+          !excludedRecommendations.includes(key) &&
           !(formData.curso === 'PEC 2.0' && key === 'PEC 1.0')
       )
     );
@@ -124,13 +136,13 @@ export default function CourseForm() {
   }, [formData.gestor]);
 
   // Sincronizar DNI faltantes concatenados
-  useEffect(() => {
-    const validDnis = dniInputs.filter(dni => dni && dni.trim() !== '');
-    setFormData(prev => ({
-      ...prev,
-      dotacion_dni_faltantes: validDnis.join(';')
-    }));
-  }, [dniInputs]);
+  // useEffect(() => {
+  //   const validDnis = dniInputs.filter(dni => dni && dni.trim() !== '');
+  //   setFormData(prev => ({
+  //     ...prev,
+  //     dotacion_dni_faltantes: validDnis.join(';')
+  //   }));
+  // }, [dniInputs]);
 
   const handleChange = e => {
     const { name, value, type, files } = e.target;
@@ -153,17 +165,17 @@ export default function CourseForm() {
     });
   };
 
-  const handleAddDni = () => {
-    setDniInputs(prev => [...prev, '']);
-  };
+  // const handleAddDni = () => {
+  //   setDniInputs(prev => [...prev, '']);
+  // };
 
-  const handleDniChange = (index, value) => {
-    setDniInputs(prev => {
-      const newList = [...prev];
-      newList[index] = value;
-      return newList;
-    });
-  };
+  // const handleDniChange = (index, value) => {
+  //   setDniInputs(prev => {
+  //     const newList = [...prev];
+  //     newList[index] = value;
+  //     return newList;
+  //   });
+  // };
 
   const validateForm = () => {
     const required = [
@@ -185,7 +197,7 @@ export default function CourseForm() {
     if (result) {
       alert('Formulario enviado con éxito');
       setFormData(initialFormData);
-      setDniInputs(['']);
+      // setDniInputs(['']);
     } else {
       alert('Error al enviar el formulario');
     }
@@ -323,10 +335,25 @@ export default function CourseForm() {
             className="w-full border p-2 rounded"
           />
         </div>
+
+              {/* Dotación en Campus */}
+      <div>
+        <label className="block font-semibold mb-1">Dotación en Campus</label>
+        <input
+          type="number"
+          name="dotacion_en_campus"
+          value={formData.dotacion_en_campus}
+          onChange={handleChange}
+          className="w-full border p-2 rounded"
+        />
+      </div>
       </div>
 
-      {/* DNI faltantes dinámicos */}
-      <div className="mt-4">
+
+
+
+      {/* DNI faltantes dinámicos */ }
+  {/* <div className="mt-4">
         <label className="block font-semibold mb-1">
           En caso de que la dotación real vs campus no esté correcta, los DNI a agregar son:
         </label>
@@ -352,9 +379,9 @@ export default function CourseForm() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
-      {/* Objetivos y Contenido */}
+  {/* Objetivos y Contenido */ }
       <div className="mt-4">
         <label className="block font-semibold mb-1">Objetivos del Curso</label>
         <textarea
@@ -376,111 +403,113 @@ export default function CourseForm() {
         />
       </div>
 
-      {/* Resultados y logros */}
-      <div className="mt-4">
-        <label className="block font-semibold mb-1">Resultados y logros</label>
-        <textarea
-          name="resultadosLogros"
-          value={formData.resultadosLogros}
-          onChange={handleChange}
-          placeholder="Comentarios respecto del dictado, participación e involucramiento de los participantes"
-          rows="4"
-          className="w-full border p-2 rounded"
-          required
-        />
-      </div>
+  {/* Resultados y logros */ }
+  <div className="mt-4">
+    <label className="block font-semibold mb-1">Resultados y logros</label>
+    <textarea
+      name="resultadosLogros"
+      value={formData.resultadosLogros}
+      onChange={handleChange}
+      placeholder="Comentarios respecto del dictado, participación e involucramiento de los participantes"
+      rows="4"
+      className="w-full border p-2 rounded"
+      required
+    />
+  </div>
 
-      {/* Observaciones */}
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-        {[
-          ['Nivel de compromiso en el curso', 'compromiso'],
-          ['Nivel de participación en las actividades sugeridas', 'participacionActividades'],
-          ['Nivel de concentración durante el curso', 'concentracion'],
-          ['Nivel de cansancio', 'cansancio'],
-          ['Interés en los temas', 'interesTemas']
-        ].map(([label, name]) => (
-          <div key={name}>
-            <p className="font-semibold mb-1">{label}</p>
-            {['alto', 'medio', 'bajo'].map(opt => (
-              <label key={opt} className="inline-flex items-center mr-4">
-                <input
-                  type="radio"
-                  name={name}
-                  value={opt}
-                  checked={formData[name] === opt}
-                  onChange={handleChange}
-                  required
-                  className="mr-1"
-                />
-                {opt.charAt(0).toUpperCase() + opt.slice(1)}
-              </label>
-            ))}
-          </div>
+  {/* Observaciones */ }
+  <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+    {[
+      ['Nivel de compromiso en el curso', 'compromiso'],
+      ['Nivel de participación en las actividades sugeridas', 'participacionActividades'],
+      ['Nivel de concentración durante el curso', 'concentracion'],
+      ['Nivel de cansancio', 'cansancio'],
+      ['Interés en los temas', 'interesTemas']
+    ].map(([label, name]) => (
+      <div key={name}>
+        <p className="font-semibold mb-1">{label}</p>
+        {['alto', 'medio', 'bajo'].map(opt => (
+          <label key={opt} className="inline-flex items-center mr-4">
+            <input
+              type="radio"
+              name={name}
+              value={opt}
+              checked={formData[name] === opt}
+              onChange={handleChange}
+              required
+              className="mr-1"
+            />
+            {opt.charAt(0).toUpperCase() + opt.slice(1)}
+          </label>
         ))}
       </div>
+    ))}
+  </div>
 
-      {/* Otros aspectos y firma */}
-      <div className="mt-4">
-        <label className="block font-semibold mb-1">Otros aspectos a destacar</label>
-        <textarea
-          name="otrosAspectos"
-          value={formData.otrosAspectos}
-          onChange={handleChange}
-          rows="3"
-          className="w-full border p-2 rounded"
-          placeholder='Completar de ser necesario con los detalles de las observaciones marcadas en el punto anterior.'
-        />
-      </div>
+  {/* Otros aspectos y firma */ }
+  <div className="mt-4">
+    <label className="block font-semibold mb-1">Otros aspectos a destacar</label>
+    <textarea
+      name="otrosAspectos"
+      value={formData.otrosAspectos}
+      onChange={handleChange}
+      rows="3"
+      className="w-full border p-2 rounded"
+      placeholder='Completar de ser necesario con los detalles de las observaciones marcadas en el punto anterior.'
+    />
+  </div>
 
-      {/* Recomendaciones */}
-      <div className="mt-4">
-        <p className="font-semibold mb-2">Recomendaciones (marcá los cursos)</p>
-        {Object.keys(recommendationsOptions).length === 0 ? (
-          <p className="text-sm text-gray-600">
-            Seleccioná un curso arriba para ver recomendaciones.
-          </p>
-        ) : (
-          Object.keys(recommendationsOptions).map(curso => (
-            <div key={curso} className="mb-4 border-l-4 border-blue-300 pl-4">
-              <label className="inline-flex items-center mr-6 mb-1">
-                <input
-                  type="checkbox"
-                  checked={!!formData.recomendaciones[curso]}
-                  onChange={() => handleRecommendationChange(curso)}
-                  className="mr-1"
-                />
-                <span className="font-semibold">{curso}</span>
-              </label>
-              <p className="ml-8 text-sm text-gray-700 whitespace-pre-line">
-                {objetivosContenido[curso]?.contenido}
-              </p>
-            </div>
-          ))
-        )}
-      </div>
+  {/* Recomendaciones */ }
+  <div className="mt-4">
+    <p className="font-semibold mb-2">Recomendaciones (marcá los cursos)</p>
+    {Object.keys(recommendationsOptions).length === 0 ? (
+      <p className="text-sm text-gray-600">
+        Seleccioná un curso arriba para ver recomendaciones.
+      </p>
+    ) : (
+      Object.keys(recommendationsOptions).map(curso => (
+        <div key={curso} className="mb-4 border-l-4 border-blue-300 pl-4">
+          <label className="inline-flex items-center mr-6 mb-1">
+            <input
+              type="checkbox"
+              checked={!!formData.recomendaciones[curso]}
+              onChange={() => handleRecommendationChange(curso)}
+              className="mr-1"
+            />
+            <span className="font-semibold">{curso}</span>
+          </label>
+          <ul className="ml-8 list-disc list-inside text-sm text-gray-700">
+            {recomendacionesMapping[curso]?.map((rec, idx) => (
+              <li key={idx}>{rec}</li>
+            ))}
+          </ul>
+        </div>
+      ))
+    )}
+  </div>
 
-      {/* Firma (texto) */}
-      <div className="mt-4">
-        <label className="block font-semibold mb-1">Firma (Se verá como firma en el pdf resultante.)</label>
-        <input
-          type="text"
-          name="nombreFirma"
-          placeholder="Escribe tu nombre"
-          value={formData.nombreFirma}
-          onChange={handleChange}
-          className="w-full border p-2 rounded italic"
-        />
-      </div>
+  {/* Firma (texto) */ }
+  <div className="mt-4">
+    <label className="block font-semibold mb-1">Firma (Se verá como firma en el pdf resultante.)</label>
+    <input
+      type="text"
+      name="nombreFirma"
+      placeholder="Escribe tu nombre"
+      value={formData.nombreFirma}
+      onChange={handleChange}
+      className="w-full border p-2 rounded italic"
+    />
+  </div>
 
-      {/* Submit */}
-      <div className="mt-6 text-center">
-        <button
-          type="submit"
-          className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          Enviar formulario
-        </button>
-      </div>
-    </form>
+  {/* Submit */ }
+  <div className="mt-6 text-center">
+    <button
+      type="submit"
+      className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+    >
+      Enviar formulario
+    </button>
+  </div>
+    </form >
   );
 }
