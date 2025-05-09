@@ -44,15 +44,15 @@ export default function CourseForm() {
   };
 
   const gestoresEmail = {
-    'Jose L. Gallucci': 'nahuel.paz.cx@gmail.com',
-    'Mauricio Cuevas': 'nahuel.paz.cx@gmail.com',
-    'John Martinez': 'nahuel.paz.cx@gmail.com',
-    'Georgina M. Cutili': 'nahuel.paz.cx@gmail.com',
-    'Octavio Torres': 'nahuel.paz.cx@gmail.com',
-    'Fernanda M. Rodriguez': 'nahuel.paz.cx@gmail.com',
-    'Pablo J. Raggio': 'nahuel.paz.cx@gmail.com',
-    'Noelia Otarula': 'nahuel.paz.cx@gmail.com',
-    'Dante Merluccio': 'nahuel.paz.cx@gmail.com'
+    'Jose L. Gallucci': 'jose.l.gallucci@ypf.com',
+    'Mauricio Cuevas': 'mauricio.cuevas@ypf.com',
+    'John Martinez': 'john.martinez@ypf.com',
+    'Georgina M. Cutili': 'georgina.m.cutili@ypf.com',
+    'Octavio Torres': 'octavio.torres@ypf.com',
+    'Fernanda M. Rodriguez': 'fernanda.m.rodriguez@ypf.com',
+    'Pablo J. Raggio': 'pablo.j.raggio@ypf.com',
+    'Noelia Otarula': 'noelia.otarula@ypf.com',
+    'Dante Merluccio': 'dante.merluccio@ypf.com'
   };
 
   const recomendacionesMapping = {
