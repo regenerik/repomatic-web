@@ -300,7 +300,7 @@ export default function CourseForm() {
         </div>
         {/* Presentes */}
         <div>
-          <label className="block font-semibold mb-1">Presentes</label>
+          <label className="block font-semibold mb-1">Asistentes</label>
           <input
             type="number"
             name="presentes"
