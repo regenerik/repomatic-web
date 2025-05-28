@@ -211,7 +211,7 @@ export default function CourseForm() {
       {/* --- HEADER --- */}
       <div className="flex flex-col items-center">
         <img src={logo} alt="el logo" className="w-20 mb-3" />
-        <h1 className="text-2xl font-bold">Formulario para Gestores YPF</h1>
+        <h1 className="text-2xl font-bold">Formulario para Gestores</h1>
       </div>
       <br />
 
