@@ -19,7 +19,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                     const response = await fetch("https://repomatic.onrender.com/delete_especific_form", {
                         method: "POST",
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type": "application/json",
+                            'Authorization': '1803-1989-1803-1989'
                         },
                         body: JSON.stringify({ id })
                     });

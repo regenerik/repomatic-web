@@ -31,9 +31,15 @@ export default function FormsList() {
     navigate('/form')
   }
 
-  const handleDelete = (id) => {
+const handleDelete = (id) => {
+  const confirmacion = window.confirm(
+    "¿Estás seguro que querés eliminar este formulario?\nMirá que no hay vuelta atrás..."
+  );
+
+  if (confirmacion) {
     actions.deleteFormById(id);
-  };
+  }
+};
 
   return (
     <div>
