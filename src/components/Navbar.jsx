@@ -51,29 +51,30 @@ const Navbar = () => {
                             )
                         }
                         {
-                            token && (
+                            admin && (
                                 <li className="nav-item">
                                     <Link className={isActive('/main')} to="/main">Reportes</Link>
                                 </li>
                             )
                         }
                         {
-                            token && (
+                            admin && (
                                 <li className="nav-item">
                                     <Link className={isActive('/experience')} to="/experience">Experiencia</Link>
                                 </li>
                             )
                         }
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <Link className={isActive('/plus')} to="/plus">Saber más</Link>
-                        </li>
-                        {
+                        </li> */}
+                        
+                        {/* {
                             !token && (
                                 <li className="nav-item">
                                     <Link className={isActive('/loginregister')} to="/loginregister">Registrate</Link>
                                 </li>
                             )
-                        }
+                        } */}
                         {token && (
                             <li className="nav-item dropdown">
                                 <div className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">

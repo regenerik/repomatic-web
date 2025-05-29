@@ -26,15 +26,15 @@ const Home = () => {
                                     <img src={reportImage} alt="Organización de reportes" />
                                     <div className="welcome-text">
                                         <h1>Bienvenido a Repomatic, {name}</h1>
-                                        <h2>¡Una forma más fácil de organizar tus reportes!</h2>
+                                        <h2>¡Una forma más fácil de organizar tus formularios!</h2>
                                     </div>
                                 </div>
                             </section>
                             <section className="section-update home-section">
                                 <div className="update-content home-text">
-                                    <h2>¿Sabías que podés pedir actualización de tus reportes cuando quieras?</h2>
-                                    <p>No dejes de visitar nuestra sección de reportes y mantener tus datos al día.</p>
-                                    <h5 onClick={()=> navigate('./main')} className="btn-action">Ir a Reportes</h5>
+                                    <h2>¿Sabías que podés hacer seguimiento de tus formularios cuando quieras?</h2>
+                                    <p>No dejes de visitar nuestra sección de formularios y mantener tus datos al día.</p>
+                                    <h5 onClick={()=> navigate('./form-list')} className="btn-action">Ir a formularios</h5>
                                 </div>
                                 <div className="update-image home-image">
                                     <img src={updateImage} alt="Actualización de reportes" />
@@ -54,8 +54,9 @@ const Home = () => {
 
                             <section className="section-upcoming home-section">
                                 <div className="upcoming-content home-text">
-                                    <h2>Lo que se viene</h2>
-                                    <p>Próximamente podrás descargar los reportes directamente desde acá. Y si sos administrador, podrás gestionar usuarios, reportes, modificar accesos y mucho más.</p>
+                                    <h2>Ya probaste el chat?</h2>
+                                    <p>Actualmente podes conversar con nuestro chat. Con el podés sacarte todas las dudas respecto a seguridad. Lo que necesites, lo responde.</p>
+                                    <h5 onClick={()=> navigate('./chat')} className="btn-action">Ir al chat</h5>
                                 </div>
                                 <div className="upcoming-image home-image">
                                     <img src={upcomingImage} alt="Futuras funcionalidades" />

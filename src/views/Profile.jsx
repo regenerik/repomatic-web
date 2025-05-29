@@ -13,7 +13,7 @@ const Profile = () => {
             <Navbar />
             <div className="container mt-3 profile-container" >
                 <p style={{ marginLeft: '25px', marginTop: '15px', marginBottom: '20px' }}>
-                    Profile Settings
+                    Próximamente podrás modificar tus datos...
                 </p>
 
             </div>
