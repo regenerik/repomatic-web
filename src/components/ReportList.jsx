@@ -168,16 +168,16 @@ const ReportList = () => {
   }
 
   return (
-    <div className="report-list-container">
+    <div className="report-list-container d-flex justify-content-center flex-column">
       
-      <h3 className="report-list-title">Reportes de cursos por Gestor</h3>
-      <FormsList/>
+      {/* <h3 className="report-list-title">Reportes de cursos por Gestor</h3>
+      <FormsList/> */}
       <h3 className="report-list-title mt-4">Reportes Generales</h3>
       <button className="refresh-button" onClick={actions.getReportList}>
         Cargar/Actualizar
       </button>
       {store.reportes_acumulados.length === 0 ? (
-        <p>No hay reportes disponibles.</p>
+        <p>La recuperación puede demorar hasta 2 minutos. Si pasado ese tiempo no hay nada, no hay reportes disponibles.</p>
       ) : (
         store.reportes_acumulados.map((report, reportIndex) => (
           <ReportCard

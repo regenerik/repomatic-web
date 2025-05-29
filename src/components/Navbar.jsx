@@ -43,11 +43,13 @@ const Navbar = () => {
                                 </li>
                             )
                         }
-
-                        <li className="nav-item">
-                            <Link className={isActive('/chat')} to="/form-list">Form</Link>
-                        </li>
-
+                        {
+                            token && (
+                                <li className="nav-item">
+                                    <Link className={isActive('/chat')} to="/form-list">Form</Link>
+                                </li>
+                            )
+                        }
                         {
                             token && (
                                 <li className="nav-item">
@@ -98,9 +100,3 @@ const Navbar = () => {
 }
 
 export default Navbar;
-
-// {store.userName && (
-//     <li className="nav-item">
-//         <Link className={isActive('/main')} to="/main">Panel</Link>
-//     </li>
-// )}

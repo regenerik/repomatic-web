@@ -1,6 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
     return {
         store: {
+            listaForms: [],
             users: [],
             userForEdit: null,
             registerOk: true,
@@ -13,6 +14,29 @@ const getState = ({ getStore, getActions, setStore }) => {
             deleteAndRefresh: false
         },
         actions: {
+            deleteFormById: async (id) => {
+                try {
+                    const response = await fetch("https://repomatic.onrender.com/delete_especific_form", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ id })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("No se pudo eliminar el formulario. El servidor respondió mal.");
+                    }
+
+                    // Eliminar del store si salió todo bien
+                    const store = getStore();
+                    const nuevaLista = store.listaForms.filter(form => form.id !== id);
+                    setStore({ ...store, listaForms: nuevaLista });
+
+                } catch (error) {
+                    console.error("Error al eliminar el formulario:", error.message);
+                }
+            },
             getAllForms: async () => {
                 try {
                     const res = await fetch(
@@ -52,7 +76,10 @@ const getState = ({ getStore, getActions, setStore }) => {
                         }
                     );
                     if (!response.ok) throw new Error('Error fetching forms');
-                    return await response.json();  // -> array de FormularioGestor
+                    let data = await response.json()
+                    let store = getStore()
+                    setStore({ ...store, listaForms: data })
+                    // return await response.json();  // -> array de FormularioGestor
                 } catch (e) {
                     console.error('getForms error:', e);
                 }

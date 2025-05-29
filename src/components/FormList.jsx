@@ -4,14 +4,13 @@ import Navbar from './Navbar.jsx';
 import { useNavigate } from 'react-router';
 
 export default function FormsList() {
-  const { actions } = useContext(Context);
-  const [forms, setForms] = useState([]);
+  const { actions,store } = useContext(Context);
+  // const [forms, setForms] = useState([]);
   const navigate = useNavigate()
 
   useEffect(() => {
     (async () => {
-      const data = await actions.getForms();
-      if (data) setForms(data);
+      await actions.getForms();
     })();
   }, [actions]);
 
@@ -31,6 +30,10 @@ export default function FormsList() {
   const handleGoToFormList = () => {
     navigate('/form')
   }
+
+  const handleDelete = (id) => {
+    actions.deleteFormById(id);
+  };
 
   return (
     <div>
@@ -79,15 +82,15 @@ export default function FormsList() {
             overflowY: 'auto'
           }}
         >
-          {forms.length === 0 ? (
-            <p style={{ color: '#6b7280', margin: 0 }}>No hay formularios aún.</p>
+          {store.listaForms.length === 0 ? (
+            <p style={{ color: '#6b7280', margin: 0 }}>Cargando formularios.<br/>Si no carga en menos de 5 segundos, no hay formularios disponibles.</p>
           ) : (
-            forms.map(form => (
+            store.listaForms.map(form => (
               <div
                 key={form.id}
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'min-content 1fr min-content',
+                  gridTemplateColumns: 'min-content 1fr min-content min-content',
                   columnGap: '1rem',
                   alignItems: 'center',
                   whiteSpace: 'nowrap',
@@ -124,6 +127,19 @@ export default function FormsList() {
                   }}
                 >
                   <i className="fa fa-download" />
+                </button>
+                <button
+                  onClick={() => handleDelete(form.id)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '1.25rem',
+                    color: '#ef4444', // rojo bonito
+                    flexShrink: 0
+                  }}
+                >
+                  <i className="fa fa-trash" />
                 </button>
               </div>
             ))
