@@ -48,6 +48,19 @@ export default function FormsList() {
     setFilteredForms(list);
   }, [filterGestor, filterApies, filterDate, store.listaForms]);
 
+  // ----------------UseEffect para chequear token----------------
+   useEffect(() => {
+    (async () => {
+      const valid = await actions.checkToken();
+      if (!valid) {
+        // Usar acción logout para limpiar store y localStorage
+        actions.logout();
+        // Redirigir a login
+        navigate('/');
+      }
+    })();
+  }, [actions, navigate]);
+
   const handleDownload = (id) => actions.downloadForm(id);
   const handleDownloadAll = () => actions.getAllForms();
   const handleGoToFormList = () => navigate('/form');
@@ -160,8 +173,7 @@ export default function FormsList() {
             padding: 16,
             height: '75vh',
             minHeight: 200,
-            overflowY: 'auto',
-            marginBottom: '4vh'
+            overflowY: 'auto'
           }}
         >
           {store.listaForms.length === 0 ? (

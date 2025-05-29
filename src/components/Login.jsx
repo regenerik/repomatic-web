@@ -24,7 +24,7 @@ const Login = () => {
       await actions.login(info);
       if (store.userName !== '' && store.userName !== undefined) {
         actions.wrongPass(false);
-        navigate('/main');
+        navigate('/form-list');
       } else {
         actions.wrongPass(true);
         setEmail('');

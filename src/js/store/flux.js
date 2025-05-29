@@ -14,6 +14,20 @@ const getState = ({ getStore, getActions, setStore }) => {
             deleteAndRefresh: false
         },
         actions: {
+            checkToken: async () => {
+                try {
+                    const response = await fetch('https://repomatic.onrender.com/check-token', {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        },
+                    });
+                    return response.ok;
+                } catch (error) {
+                    console.error('Error al validar token:', error);
+                    return false;
+                }
+            },
             deleteFormById: async (id) => {
                 try {
                     const response = await fetch("https://repomatic.onrender.com/delete_especific_form", {
