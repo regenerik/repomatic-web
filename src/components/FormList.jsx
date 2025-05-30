@@ -167,13 +167,14 @@ export default function FormsList() {
         {/* Contenedor con scroll */}
         <div
           style={{
-            background: '#fff',
+            background: 'rgba(255, 255, 255, 0.85)',
             borderRadius: 8,
             boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
             padding: 16,
             height: '75vh',
             minHeight: 200,
-            overflowY: 'auto'
+            overflowY: 'auto',
+            marginBottom: '4vh'
           }}
         >
           {store.listaForms.length === 0 ? (
