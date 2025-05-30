@@ -13,6 +13,7 @@ import Experiencia from './views/Experiencia.jsx';
 import Chat from './views/Chat.jsx';
 import Form from './views/Form.jsx'
 import FormsList from './components/FormList.jsx';
+import DataMentor from './views/DataMentor.jsx';
 
 const Layout = () => {
 
@@ -34,6 +35,7 @@ const Layout = () => {
                 <Route exact path="/admin" element={<Admin/>}/>
                 <Route exact path="/profile" element={<Profile />}/>
                 <Route exact path="/experience" element={<Experiencia />}/>
+                <Route exact path="/data-mentor" element={<DataMentor />}/>
                 <Route exact path="/*" element={<NotFound/>}/>
             </Routes>
         </BrowserRouter>

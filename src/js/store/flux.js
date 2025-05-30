@@ -161,6 +161,29 @@ const getState = ({ getStore, getActions, setStore }) => {
                     throw error;
                 }
             },
+            sendMessageMentor: async (data) => {
+                try {
+                    console.log("Entramos en el action sendMessageMentor con esta data: ", data)
+                    const response = await fetch('https://repomatic2.onrender.com/chat_mentor', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': '1803-1989-1803-1989'
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    console.log("El response es: ",response)
+                    if (!response.ok) {
+                        throw new Error('Error en la respuesta de la red.');
+                    }
+                    let datas = await response.json()
+                    return datas
+
+                } catch (error) {
+                    console.error('Error en sendMessageMentor:', error);
+                    throw error;
+                }
+            },
 
             closeChat: async (threadId) => {
                 try {
@@ -175,6 +198,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 
                     if (!response.ok) {
                         throw new Error('Error cerrando el chat.');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error en closeChat:', error);
+                }
+            },
+            closeChatMentor: async (threadId) => {
+                try {
+                    const response = await fetch('https://repomatic2.onrender.com/close_chat_mentor', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': '1803-1989-1803-1989'
+                        },
+                        body: JSON.stringify({ thread_id: threadId })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Error cerrando el chat mentor.');
                     }
                     return await response.json();
                 } catch (error) {
