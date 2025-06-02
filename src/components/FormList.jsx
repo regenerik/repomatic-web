@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext,useRef } from 'react';
 import { Context } from '../js/store/appContext.js';
 import Navbar from './Navbar.jsx';
 import { useNavigate } from 'react-router';
@@ -18,7 +18,7 @@ export default function FormsList() {
     (async () => {
       await actions.getForms();
     })();
-  }, [actions]);
+  }, []);
 
   // Inicializar lista filtrada cuando cambie store.listaForms
   useEffect(() => {
@@ -49,17 +49,21 @@ export default function FormsList() {
   }, [filterGestor, filterApies, filterDate, store.listaForms]);
 
   // ----------------UseEffect para chequear token----------------
-   useEffect(() => {
+const hasCheckedToken = useRef(false);
+
+useEffect(() => {
+  if (!hasCheckedToken.current) {
+    hasCheckedToken.current = true;
+
     (async () => {
       const valid = await actions.checkToken();
       if (!valid) {
-        // Usar acción logout para limpiar store y localStorage
         actions.logout();
-        // Redirigir a login
         navigate('/');
       }
     })();
-  }, []);
+  }
+}, []);
 
   const handleDownload = (id) => actions.downloadForm(id);
   const handleDownloadAll = () => actions.getAllForms();
