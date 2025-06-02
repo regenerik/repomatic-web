@@ -59,7 +59,7 @@ export default function FormsList() {
         navigate('/');
       }
     })();
-  }, [actions, navigate]);
+  }, []);
 
   const handleDownload = (id) => actions.downloadForm(id);
   const handleDownloadAll = () => actions.getAllForms();
