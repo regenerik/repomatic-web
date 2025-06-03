@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Context } from '../js/store/appContext.js';
 import logo from '../img/logo.png';
+import { useNavigate } from 'react-router';
 
 export default function CourseForm() {
   const { actions } = useContext(Context);
   const [ loading , setLoading ] = useState(false)
+    const navigate = useNavigate();
 
   // Inyectar Tailwind vía CDN
   useEffect(() => {
@@ -14,6 +16,23 @@ export default function CourseForm() {
     document.head.appendChild(link);
     return () => document.head.removeChild(link);
   }, []);
+
+  const hasCheckedToken = useRef(false);
+  
+  useEffect(() => {
+    if (!hasCheckedToken.current) {
+      hasCheckedToken.current = true;
+  
+      (async () => {
+        const valid = await actions.checkToken();
+        if (!valid) {
+          actions.logout();
+          navigate('/');
+        }
+      })();
+    }
+  }, []);
+  
 
   // Datos estáticos
   const objetivosContenido = {
