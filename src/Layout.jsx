@@ -11,6 +11,7 @@ import Admin from './views/Admin.jsx';
 import Profile from './views/Profile.jsx'
 import Experiencia from './views/Experiencia.jsx';
 import Chat from './views/Chat.jsx';
+import ChatCampus from './views/ChatCampus.jsx';
 import Form from './views/Form.jsx'
 import FormsList from './components/FormList.jsx';
 import DataMentor from './views/DataMentor.jsx';
@@ -24,6 +25,7 @@ const Layout = () => {
         <BrowserRouter basename={basename}>
             <Routes>
                 <Route exact path="/chat" element={<Chat/>}/>
+                <Route exact path="/chat-campus" element={<ChatCampus/>}/>
                 <Route exact path="/" element={<Home/>}/>
                 <Route exact path="/form" element={<Form/>}/>
                 <Route exact path="/form-list" element={<FormsList/>}/>
