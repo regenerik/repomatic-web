@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext,useRef } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Context } from '../js/store/appContext.js';
 import Navbar from './Navbar.jsx';
 import { useNavigate } from 'react-router';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 export default function FormsList() {
   const { actions, store } = useContext(Context);
   const navigate = useNavigate();
+  const admin = JSON.parse(localStorage.getItem('admin'));
 
   // Estados para filtros y lista filtrada
   const [filteredForms, setFilteredForms] = useState([]);
@@ -49,21 +50,21 @@ export default function FormsList() {
   }, [filterGestor, filterApies, filterDate, store.listaForms]);
 
   // ----------------UseEffect para chequear token----------------
-const hasCheckedToken = useRef(false);
+  const hasCheckedToken = useRef(false);
 
-useEffect(() => {
-  if (!hasCheckedToken.current) {
-    hasCheckedToken.current = true;
+  useEffect(() => {
+    if (!hasCheckedToken.current) {
+      hasCheckedToken.current = true;
 
-    (async () => {
-      const valid = await actions.checkToken();
-      if (!valid) {
-        actions.logout();
-        navigate('/');
-      }
-    })();
-  }
-}, []);
+      (async () => {
+        const valid = await actions.checkToken();
+        if (!valid) {
+          actions.logout();
+          navigate('/');
+        }
+      })();
+    }
+  }, []);
 
   const handleDownload = (id) => actions.downloadForm(id);
   const handleDownloadAll = () => actions.getAllForms();
@@ -235,19 +236,28 @@ useEffect(() => {
                 >
                   <i className="fa fa-download" />
                 </button>
-                <button
-                  onClick={() => handleDelete(form.id)}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontSize: '1.25rem',
-                    color: '#ef4444',
-                    flexShrink: 0
-                  }}
-                >
-                  <i className="fa fa-trash" />
-                </button>
+                {
+                  admin && (
+                    <button
+                      onClick={() => handleDelete(form.id)}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        fontSize: '1.25rem',
+                        color: '#ef4444',
+                        flexShrink: 0
+                      }}
+                    >
+                      <i className="fa fa-trash" />
+                    </button>
+
+                  )
+                }
+
+
+
+
               </div>
             ))
           )}
