@@ -71,7 +71,8 @@ export default function CourseForm() {
     'Fernanda M. Rodriguez': 'fernanda.m.rodriguez@ypf.com',
     'Pablo J. Raggio': 'pablo.j.raggio@ypf.com',
     'Noelia Otarula': 'noelia.otarula@ypf.com',
-    'Dante Merluccio': 'dante.merluccio@ypf.com'
+    'Dante Merluccio': 'dante.merluccio@ypf.com',
+    'Flavia Camuzzi': 'flavia.camuzzi@ypf.com'
   };
 
   const recomendacionesMapping = {
