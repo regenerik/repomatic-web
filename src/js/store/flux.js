@@ -22,7 +22,17 @@ const getState = ({ getStore, getActions, setStore }) => {
                             Authorization: `Bearer ${localStorage.getItem('token')}`,
                         },
                     });
-                    return response.ok;
+                    console.log("Respuesta completa:", response);
+                    console.log("este es el response.ok del checkToken: ", response.ok);
+
+                    if (!response.ok) {
+                        return false;
+                    }
+
+                    const data = await response.json();
+                    console.log("Respuesta del servidor:", data);
+
+                    return data.valid === true; // 👈 ESTA LÍNEA es la que te salva
                 } catch (error) {
                     console.error('Error al validar token:', error);
                     return false;
@@ -172,7 +182,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         },
                         body: JSON.stringify(data)
                     });
-                    console.log("El response es: ",response)
+                    console.log("El response es: ", response)
                     if (!response.ok) {
                         throw new Error('Error en la respuesta de la red.');
                     }
