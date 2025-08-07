@@ -143,7 +143,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             sendMessage: async (data) => {
                 try {
-                    const response = await fetch('https://repomatic2.onrender.com/chat', {
+                    const response = await fetch('https://repomatic-old.onrender.com/chat', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             sendMessageMentor: async (data) => {
                 try {
                     console.log("Entramos en el action sendMessageMentor con esta data: ", data)
-                    const response = await fetch('https://repomatic2.onrender.com/chat_mentor', {
+                    const response = await fetch('https://repomatic-old.onrender.com/chat_mentor', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -187,7 +187,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
             closeChat: async (threadId) => {
                 try {
-                    const response = await fetch('https://repomatic2.onrender.com/close_chat', {
+                    const response = await fetch('https://repomatic-old.onrender.com/close_chat', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -206,7 +206,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             closeChatMentor: async (threadId) => {
                 try {
-                    const response = await fetch('https://repomatic2.onrender.com/close_chat_mentor', {
+                    const response = await fetch('https://repomatic-old.onrender.com/close_chat_mentor', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -226,7 +226,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             deleteIndividualReport: async (id) => {
                 const apiKey = process.env.REACT_APP_API_KEY
                 try {
-                    let response = await fetch(`https://repomatic2.onrender.com/delete_individual_report/${id}`, {
+                    let response = await fetch(`https://repomatic-old.onrender.com/delete_individual_report/${id}`, {
                         method: "DELETE",
                         headers: {
                             'Authorization': apiKey
@@ -247,7 +247,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             deleteReportGroup: async (url) => {
                 const apiKey = process.env.REACT_APP_API_KEY
                 try {
-                    let response = await fetch('https://repomatic2.onrender.com/delete_report_group', {
+                    let response = await fetch('https://repomatic-old.onrender.com/delete_report_group', {
                         method: "DELETE",
                         body: JSON.stringify({ 'report_url': url }),
                         headers: {
@@ -278,7 +278,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
                 console.log("payload preparado: ", payload)
                 try {
-                    let response = await fetch("https://repomatic2.onrender.com/update_admin", {
+                    let response = await fetch("https://repomatic-old.onrender.com/update_admin", {
                         body: JSON.stringify(payload),
                         method: "PUT",
                         headers: {
@@ -310,7 +310,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return;
                 }
 
-                let response = await fetch("https://repomatic2.onrender.com/users", {
+                let response = await fetch("https://repomatic-old.onrender.com/users", {
                     headers: {
                         "Authorization": `Bearer ${token}`
                     }
@@ -331,7 +331,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             updateReport: async (payload) => {
                 const apiKey = process.env.REACT_APP_API_KEY
                 try {
-                    const response = await fetch('https://repomatic2.onrender.com/recuperar_reporte', {
+                    const response = await fetch('https://repomatic-old.onrender.com/recuperar_reporte', {
                         method: 'POST',
                         body: JSON.stringify(payload),
                         headers: {
@@ -370,7 +370,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             login: async (info) => {
                 try {
-                    let response = await fetch("https://repomatic2.onrender.com/login", {
+                    let response = await fetch("https://repomatic-old.onrender.com/login", {
                         method: 'POST',
                         body: JSON.stringify(info),
                         headers: {
@@ -417,7 +417,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             register: async (info) => {
                 try {
 
-                    let response = await fetch('https://repomatic2.onrender.com/create_user', {
+                    let response = await fetch('https://repomatic-old.onrender.com/create_user', {
                         method: "POST",
                         body: JSON.stringify(info),
                         headers: {
@@ -455,7 +455,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             getReportList: async () => {
                 try {
                     const apiKey = process.env.REACT_APP_API_KEY
-                    const result = await fetch('https://repomatic2.onrender.com/reportes_acumulados', {
+                    const result = await fetch('https://repomatic-old.onrender.com/reportes_acumulados', {
                         headers: {
                             'Authorization': apiKey
                         }
@@ -500,7 +500,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             downloadReport: async (report_id) => {
                 const apiKey = process.env.REACT_APP_API_KEY;
                 try {
-                    const response = await fetch(`https://repomatic2.onrender.com/descargar_reporte/${report_id}`, {
+                    const response = await fetch(`https://repomatic-old.onrender.com/descargar_reporte/${report_id}`, {
                         method: "GET",
                         headers: {
                             "Authorization": apiKey
