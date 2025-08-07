@@ -35,7 +35,7 @@ const SaberMas = () => {
             <p>
               Para más información técnica, podés acceder a la documentación del servidor en el siguiente enlace:
             </p>
-            <a href="https://repomatic.onrender.com" target="_blank" rel="noopener noreferrer" className="btn-doc-link">
+            <a href="https://repomatic-old.onrender.com" target="_blank" rel="noopener noreferrer" className="btn-doc-link">
               Ver Documentación del Servidor
             </a>
           </div>

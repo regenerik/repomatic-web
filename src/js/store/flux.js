@@ -16,7 +16,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         actions: {
             checkToken: async () => {
                 try {
-                    const response = await fetch('https://repomatic.onrender.com/check-token', {
+                    const response = await fetch('https://repomatic-old.onrender.com/check-token', {
                         method: 'GET',
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -30,7 +30,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             deleteFormById: async (id) => {
                 try {
-                    const response = await fetch("https://repomatic.onrender.com/delete_especific_form", {
+                    const response = await fetch("https://repomatic-old.onrender.com/delete_especific_form", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             getAllForms: async () => {
                 try {
                     const res = await fetch(
-                        'https://repomatic.onrender.com/form_gestores/download_excel',
+                        'https://repomatic-old.onrender.com/form_gestores/download_excel',
                         {
                             method: 'GET',
                             headers: {
@@ -81,7 +81,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             getForms: async () => {
                 try {
                     const response = await fetch(
-                        'https://repomatic.onrender.com/get_forms',
+                        'https://repomatic-old.onrender.com/get_forms',
                         {
                             method: 'GET',
                             headers: {
@@ -103,7 +103,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             downloadForm: async (id) => {
                 try {
                     const response = await fetch(
-                        `https://repomatic.onrender.com/get_form_pdf/${id}`,
+                        `https://repomatic-old.onrender.com/get_form_pdf/${id}`,
                         {
                             method: 'GET',
                             headers: {
@@ -127,7 +127,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             sendForm: async (formData) => {
                 try {
-                    const response = await fetch('https://repomatic.onrender.com/form_gestores', {
+                    const response = await fetch('https://repomatic-old.onrender.com/form_gestores', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -539,7 +539,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             uploadFile: async (formData) => {
                 try {
                     // Hacemos el fetch a la URL del backend
-                    let response = await fetch("https://repomatic.onrender.com/create_resumes", {
+                    let response = await fetch("https://repomatic-old.onrender.com/create_resumes", {
                         method: 'POST',
                         body: formData, // Asegurarse de que el archivo se esté enviando correctamente
                     });
@@ -562,7 +562,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             uploadExcel: async (formData) => {
                 const apiKey = process.env.REACT_APP_API_KEY
                 try {
-                    const response = await fetch('https://repomatic.onrender.com/subir_excel_total', {
+                    const response = await fetch('https://repomatic-old.onrender.com/subir_excel_total', {
                         method: 'POST',
                         body: formData,
                         headers: {
@@ -604,7 +604,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             deleteExcel: async () => {
                 const apiKey = process.env.REACT_APP_API_KEY
                 try {
-                    const response = await fetch('https://repomatic.onrender.com/eliminar_excel_total', {
+                    const response = await fetch('https://repomatic-old.onrender.com/eliminar_excel_total', {
                         method: 'DELETE',
                         headers: {
                             "Authorization": apiKey
@@ -620,7 +620,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             existencia: async () => {
                 const apiKey = process.env.REACT_APP_API_KEY
                 try {
-                    const response = await fetch('https://repomatic.onrender.com/existencia_excel', {
+                    const response = await fetch('https://repomatic-old.onrender.com/existencia_excel', {
                         headers: {
                             "Authorization": apiKey
                         }
@@ -643,7 +643,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const apiKey = process.env.REACT_APP_API_KEY
                 try {
 
-                    const response = await fetch('https://repomatic.onrender.com/get_one_resume', {
+                    const response = await fetch('https://repomatic-old.onrender.com/get_one_resume', {
                         method: 'POST',
                         headers: {
                             'Authorization': apiKey,

@@ -45,7 +45,7 @@ const Home = () => {
                                 <div className="api-content home-text">
                                     <h2>¿Tenés dudas de cómo utilizar nuestra A.P.I?</h2>
                                     <p>Ya no más. Accedé a la documentación completa desde acá:</p>
-                                    <a href="https://repomatic.onrender.com" target="_blank" rel="noopener noreferrer" className="btn-action">Ver Documentación de la API</a>
+                                    <a href="https://repomatic-old.onrender.com" target="_blank" rel="noopener noreferrer" className="btn-action">Ver Documentación de la API</a>
                                 </div>
                                 <div className="api-image home-image">
                                     <img src={apiImage} alt="Documentación API" />
