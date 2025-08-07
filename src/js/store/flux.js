@@ -153,7 +153,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             sendMessage: async (data) => {
                 try {
-                    const response = await fetch('https://repomatic-old.onrender.com/chat', {
+                    const response = await fetch('https://repomatic-turbo-meww.com/chat', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
